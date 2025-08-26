@@ -136,3 +136,29 @@ export const updateUser = async (req, res) => {
         return errorResponse(res, error.message, 500, "UPDATE_USER_ERROR");
     }
 };
+
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Validar ID
+        if (!ObjectId.isValid(id)) {
+            return errorResponse(res, "ID inválido", 400, "INVALID_ID");
+        }
+
+        // Intentar eliminar
+        const result = await col().deleteOne({ _id: new ObjectId(id) });
+
+        if (result.deletedCount === 0) {
+            return errorResponse(res, "Usuario no encontrado", 404, "NOT_FOUND");
+        }
+
+        return successResponse(res, { id, message: "Usuario eliminado con éxito" }, 200);
+
+    } catch (error) {
+        return errorResponse(res, error.message, 500, "DELETE_USER_ERROR");
+    }
+};
+
+
