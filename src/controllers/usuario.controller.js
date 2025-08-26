@@ -33,6 +33,7 @@ export const registerUser = async (req, res, next) => {
             nombre,
             email,
             contrasena: hashedPassword,
+            rol: "usuario"
         });
 
         usuario.validar(); // Validación del modelo
@@ -94,7 +95,7 @@ export const updateUser = async (req, res) => {
         if (req.user.rol !== "admin" && req.user.id !== id) {
             return errorResponse(res, "No tienes permiso para modificar este usuario", 403, "FORBIDDEN");
         }
-        
+
         // Validar ID
         if (!ObjectId.isValid(id)) {
             return errorResponse(res, "ID inválido", 400, "INVALID_ID");

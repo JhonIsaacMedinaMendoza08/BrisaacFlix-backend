@@ -5,6 +5,7 @@ import express from "express";
 import { fileURLToPath } from "url";
 
 import userRoutes from "./routes/usuario.routes.js";
+import passport  from "./config/passport.js";
 //import errorHandler from "./middlewares/errorHandler.js";
 //import { limiter } from "./middlewares/limiter.js";
 //import versionRouter from "./routes/versionRouter.js";
@@ -21,6 +22,9 @@ const app = express();
 
 // Middlewares globales
 app.use(express.json());
+app.use(passport.initialize());
+
+
 //app.use(limiter);
 
 // Healthcheck
