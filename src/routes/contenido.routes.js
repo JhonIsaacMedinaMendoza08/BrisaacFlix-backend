@@ -1,7 +1,7 @@
 // Zona de importacion de modulos
 import { Router } from "express"; // rutas de express
 import { validate } from "../middlewares/validate.js"; // Validator-express
-import { listarContenidoRules, getContenidoByIdRules, crearContenidoRules, getContenidoByIdUsuarioRules, actualizarEstadoContenidoRules, eliminarContenidoRules} from "../routes/contenido.rules.js";
+import { listarContenidoRules, getContenidoByIdRules, crearContenidoRules, getContenidoByIdUsuarioRules, actualizarEstadoContenidoRules, eliminarContenidoRules} from "../validators/contenido.rules.js";
 import { listarContenido, getContenidoById, crearContenido, getContenidoByIdUsuario, actualizarEstadoContenido, eliminarContenido} from "../controllers/contenido.controller.js";
 
 // Inicializacion de rutas de express
