@@ -114,6 +114,9 @@ export const updateUser = async (req, res) => {
                 return errorResponse(res, "El correo ya está registrado por otro usuario", 409, "EMAIL_DUPLICADO");
             }
         }
+        if (contrasena && contrasena.length < 8) {
+            return errorResponse(res, "La contraseña debe tener mínimo 8 caracteres", 400, "INVALID_PASSWORD_LENGTH");
+        }
 
         // Preparar datos a actualizar
         const updateFields = {};
@@ -132,9 +135,11 @@ export const updateUser = async (req, res) => {
             return errorResponse(res, "No se pudo actualizar el usuario", 500, "UPDATE_ERROR");
         }
 
+        const { contrasena: _, ...safeFields } = updateFields;
+
         return successResponse(res, {
             id,
-            ...updateFields
+            ...safeFields
         }, 200);
 
     } catch (error) {
