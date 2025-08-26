@@ -6,9 +6,8 @@ import { fileURLToPath } from "url";
 
 import userRoutes from "./routes/usuario.routes.js";
 import passport  from "./config/passport.js";
-//import errorHandler from "./middlewares/errorHandler.js";
+import versionRouter from "./routes/version.routes.js";
 //import { limiter } from "./middlewares/limiter.js";
-//import versionRouter from "./routes/versionRouter.js";
 
 //const __filename = fileURLToPath(import.meta.url);
 //const __dirname = path.dirname(__filename);
@@ -38,8 +37,8 @@ app.use("/api/v1/usuarios", userRoutes);
 // Swagger Docs
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocumentJson));
 
-// Version endpoint
-//app.use("/version", versionRouter);
+//Version endpoint
+app.use("/version", versionRouter);
 
 // 404 Handler
 //app.use((req, res) => res.status(404).json({ message: "Not Found" }));
