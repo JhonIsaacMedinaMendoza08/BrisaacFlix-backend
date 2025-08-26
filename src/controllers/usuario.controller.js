@@ -69,20 +69,17 @@ export const getUserById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        // Validar que el id sea un ObjectId válido
-        if (!ObjectId.isValid(id)) {
-            return errorResponse(res, "ID inválido", 400, "INVALID_ID");
+        // si no es admin, solo puede ver su propio perfil
+        if (req.user.rol !== "admin" && req.user.id !== id) {
+            return errorResponse(res, "No tienes permiso para ver este usuario", 403, "FORBIDDEN");
         }
 
-        // Buscar usuario por ID
-        const usuario = await col()
-            .findOne({ _id: new ObjectId(id) }, { projection: { contrasena: 1, nombre: 1, email: 1, rol: 1, createdAt: 1 } });
-
+        const usuario = await col().findOne({ _id: new ObjectId(id) });
         if (!usuario) {
             return errorResponse(res, "Usuario no encontrado", 404, "NOT_FOUND");
         }
 
-        return successResponse(res, usuario, 200);
+        return successResponse(res, usuario);
     } catch (error) {
         return errorResponse(res, error.message, 500, "GET_USER_ERROR");
     }
@@ -93,6 +90,11 @@ export const updateUser = async (req, res) => {
         const { id } = req.params;
         const { nombre, email, contrasena } = req.body;
 
+        // si no es admin, solo puede actualizar su propio perfil
+        if (req.user.rol !== "admin" && req.user.id !== id) {
+            return errorResponse(res, "No tienes permiso para modificar este usuario", 403, "FORBIDDEN");
+        }
+        
         // Validar ID
         if (!ObjectId.isValid(id)) {
             return errorResponse(res, "ID inválido", 400, "INVALID_ID");
