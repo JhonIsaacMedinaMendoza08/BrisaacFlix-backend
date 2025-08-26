@@ -1,19 +1,20 @@
 // src/controllers/contenido.controller.js
 import { ObjectId } from "mongodb";
-import { Tarea } from "../models/contenido.model.js"; // tu clase modelo
-import { getCollection } from "../config/db.js"; // tu helper de colección
+import { Tarea } from "../models/contenido.model.js"; 
+import { getCollection } from "../config/db.js"; 
+import { successResponse, errorResponse } from "../utils/responses.js";
 
 // Helpers para respuestas estándar
 function successResponse(res, data, status = 200) {
-  return res.status(status).json({ ok: true, data });
+    return res.status(status).json({ ok: true, data });
 }
 function errorResponse(res, message, status = 400, code = "ERROR") {
-  return res.status(status).json({ ok: false, error: { message, code } });
+    return res.status(status).json({ ok: false, error: { message, code } });
 }
 
 // Reutilizamos la colección "contenido"
 function col() {
-  return getCollection("contenido");
+    return getCollection("contenido");
 }
 
 // Listar contenido (público)
@@ -46,17 +47,17 @@ export async function getContenidoById(req, res, next) {
 
 // Crear contenido (usuario autenticado)
 export async function crearContenido(req, res, next) {
-  try {
-    const tarea = new Tarea(req.body);
-    tarea.validar();
+    try {
+        const tarea = new Tarea(req.body);
+        tarea.validar();
 
-    const { insertedId } = await col().insertOne(tarea.toDocument());
-    const creado = await col().findOne({ _id: insertedId });
+        const { insertedId } = await col().insertOne(tarea.toDocument());
+        const creado = await col().findOne({ _id: insertedId });
 
-    return successResponse(res, creado, 201);
-  } catch (err) {
+        return successResponse(res, creado, 201);
+    } catch (err) {
     return next(err);
-  }
+    }
 }
 
 // Contenido por usuario
