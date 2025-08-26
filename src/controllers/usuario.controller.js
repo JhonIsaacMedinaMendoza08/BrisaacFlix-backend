@@ -193,6 +193,7 @@ export const loginUser = async (req, res) => {
         }
 
         // Generar JWT
+        
         const token = jwt.sign(
             { id: usuario._id, email: usuario.email, rol: usuario.rol },
             process.env.JWT_SECRET || "supersecreto",
