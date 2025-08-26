@@ -4,7 +4,7 @@ import express from "express";
 //import path from "path";
 import { fileURLToPath } from "url";
 
-//import userRoutes from "./routes/routers.js";
+import userRoutes from "./routes/usuario.routes.js";
 //import errorHandler from "./middlewares/errorHandler.js";
 //import { limiter } from "./middlewares/limiter.js";
 //import versionRouter from "./routes/versionRouter.js";
@@ -29,7 +29,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // Rutas principales
-//app.use("/api/user", userRoutes);
+app.use("/api/v1/usuarios", userRoutes);
 
 // Swagger Docs
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocumentJson));
