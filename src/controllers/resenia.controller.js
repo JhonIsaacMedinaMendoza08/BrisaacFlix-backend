@@ -1,16 +1,16 @@
 // src/controllers/contenido.controller.js
 import { ObjectId } from "mongodb";
-import { Contenido } from "../models/contenido.model.js"; 
+import { Tarea } from "../models/contenido.model.js"; 
 import { getCollection } from "../config/db.js"; 
 import { successResponse, errorResponse } from "../utils/responses.js";
 
-// Reutilizamos la colección "contenido"
+// Reutilizamos la colección "Resenias"
 function col() {
-    return getCollection("contenido");
+    return getCollection("resenias");
 }
 
-// Listar contenido (público)
-export async function listarContenido(req, res, next) {
+// Listar reseñas (público)
+export async function listarResenias(req, res, next) {
     try {
         const filtro = {};
         if (req.query.estado) filtro.estado = req.query.estado;
@@ -23,8 +23,8 @@ export async function listarContenido(req, res, next) {
     }
 }
 
-// Obtener Reseñas por ID
-export async function getReseniasById(req, res, next) {
+// Obtener contenido por ID
+export async function getContenidoById(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
         const doc = await col().findOne({ _id });
@@ -38,9 +38,9 @@ export async function getReseniasById(req, res, next) {
 }
 
 // Crear contenido (usuario autenticado)
-export async function crearResenia(req, res, next) {
+export async function crearContenido(req, res, next) {
     try {
-        const Contenido = new Contenido(req.body);
+        const tarea = new Tarea(req.body);
         tarea.validar();
 
         const { insertedId } = await col().insertOne(tarea.toDocument());

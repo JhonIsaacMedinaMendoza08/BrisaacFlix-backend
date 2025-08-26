@@ -5,7 +5,7 @@ import { ObjectId } from "mongodb"; // Modulo para crar ID de mongoDB
 const ESTADOS = new Set(['pendiente', 'rechazada', 'aprobada']); // creamos coleccion de valores unicos para validacion de atributo estado
 
 // Creacion de Clase Tarea
-export class Tarea{
+export class Contenido{
     // Contructor definicion de atribbutos
     constructor({ _id, tmdbId, titulo, sinopsis, anio, poster, generos = [], estado = 'pendiente', createdAt, updatedAt, usuarioId})
     {   
