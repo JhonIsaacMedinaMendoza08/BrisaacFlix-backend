@@ -4,6 +4,8 @@ import { Usuario } from "../models/usuario.model.js";
 import { getCollection } from "../config/db.js";
 import { successResponse, errorResponse } from "../utils/responses.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 
 // Helpers para respuestas estándar
@@ -161,4 +163,47 @@ export const deleteUser = async (req, res) => {
     }
 };
 
+export const loginUser = async (req, res) => {
+    try {
+        const { email, contrasena } = req.body;
+
+        // Validar entrada
+        if (!email || !contrasena) {
+            return errorResponse(res, "Correo y contraseña son requeridos", 400, "VALIDATION_ERROR");
+        }
+
+        // Buscar usuario
+        const usuario = await col().findOne({ email });
+        if (!usuario) {
+            return errorResponse(res, "Credenciales inválidas", 401, "INVALID_CREDENTIALS");
+        }
+
+        // Comparar contraseñas
+        const validPassword = await bcrypt.compare(contrasena, usuario.contrasena);
+        if (!validPassword) {
+            return errorResponse(res, "Credenciales inválidas", 401, "INVALID_CREDENTIALS");
+        }
+
+        // Generar JWT
+        const token = jwt.sign(
+            { id: usuario._id, email: usuario.email, rol: usuario.rol },
+            process.env.JWT_SECRET || "supersecreto",
+            { expiresIn: "1h" } // restricción: expira en 1 hora
+        );
+
+        return successResponse(res, {
+            message: "Inicio de sesión exitoso",
+            token,
+            usuario: {
+                id: usuario._id,
+                nombre: usuario.nombre,
+                email: usuario.email,
+                rol: usuario.rol
+            }
+        }, 200);
+
+    } catch (error) {
+        return errorResponse(res, error.message, 500, "LOGIN_ERROR");
+    }
+};
 
