@@ -35,10 +35,10 @@ app.get("/api/health", (req, res) => {
 });
 
 // Rutas de Contenido
-app.use("/api/contenido", contenidoRoutes);
+app.use("/api/v1/contenido", contenidoRoutes);
 
 // Rutas de Reseñas
-app.use("/api/resenias", reseniasRoutes);
+app.use("/api/v1/resenias", reseniasRoutes);
 
 // Rutas principales
 app.use("/api/v1/usuarios", userRoutes);
