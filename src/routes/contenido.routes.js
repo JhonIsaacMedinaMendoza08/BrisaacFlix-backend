@@ -10,6 +10,7 @@ const routes = Router();
 // Rutas de Contenido
 
 // Rutas Publicas
+
 routes.get("/", listarContenidoRules, validate, listarContenido); // Para obtener Contenido
 routes.get("/:id", getContenidoByIdRules, validate, getContenidoById); // Para obtener un Contenido por ID
 
@@ -20,6 +21,7 @@ routes.get("/usuario/:id", getContenidoByIdUsuarioRules, validate, getContenidoB
 // Rutas de Administrador
 routes.patch("/:id/estado", actualizarEstadoContenidoRules, validate, actualizarEstadoContenido);// Para Actualizar estado de un Contenido (Exclusivo Admistrador)
 routes.delete("/:id", eliminarContenidoRules, validate, eliminarContenido); // Para Borrar Contenido (Exclusivo Admistrador)
+
 // Por requerimientos debe ponerse pero en logica justificada un adminis deberia cambiar sue stado a rechazado y ai el contenido dejaria de estar disponible sin necesidad e borrarlo
 
 // Exportamos todas las rutas en routes

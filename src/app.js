@@ -7,10 +7,10 @@ import { fileURLToPath } from "url";
 import contenidoRoutes from "./routes/contenido.routes.js";
 import reseniasRoutes from "./routes/resenia.routes.js";
 
-//import userRoutes from "./routes/routers.js";
-//import errorHandler from "./middlewares/errorHandler.js";
+import userRoutes from "./routes/usuario.routes.js";
+import passport  from "./config/passport.js";
+import versionRouter from "./routes/version.routes.js";
 //import { limiter } from "./middlewares/limiter.js";
-//import versionRouter from "./routes/versionRouter.js";
 
 //const __filename = fileURLToPath(import.meta.url);
 //const __dirname = path.dirname(__filename);
@@ -24,6 +24,9 @@ const app = express();
 
 // Middlewares globales
 app.use(express.json());
+app.use(passport.initialize());
+
+
 //app.use(limiter);
 
 // Healthcheck
@@ -38,13 +41,13 @@ app.use("/api/contenido", contenidoRoutes);
 app.use("/api/resenias", reseniasRoutes);
 
 // Rutas principales
-//app.use("/api/user", userRoutes);
+app.use("/api/v1/usuarios", userRoutes);
 
 // Swagger Docs
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocumentJson));
 
-// Version endpoint
-//app.use("/version", versionRouter);
+//Version endpoint
+app.use("/version", versionRouter);
 
 // 404 Handler
 //app.use((req, res) => res.status(404).json({ message: "Not Found" }));

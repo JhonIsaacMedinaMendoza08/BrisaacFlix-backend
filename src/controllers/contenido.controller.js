@@ -1,13 +1,16 @@
+
 // Zona de importacion de modulos
 import { ObjectId } from "mongodb";
 import { Contenido } from "../models/contenido.model.js"; 
 import { getCollection } from "../config/db.js"; 
 import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
 
+
 // Reutilizamos la colección "contenido"
 function col() {
     return getCollection("contenido");
 }
+
 
 // Listar contenido (público)  ->  GET /api/contenido
 export async function listarContenido(_req, res, next) {
@@ -20,6 +23,7 @@ export async function listarContenido(_req, res, next) {
 }
 
 // Obtener Reseñas por ID ->  GET /api/contenido/:id
+
 export async function getContenidoById(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
@@ -49,12 +53,14 @@ export async function crearContenido(req, res, next) {
         contenido.validar();
         const { insertedId } = await col().insertOne(contenido.toDocument());
         return createdResponse(res, { id: insertedId });
+
     } catch (err) {
     return next(err);
     }
 }
 
 // Contenido por usuario ->  GET /api/contenido/usuario/:id
+
 export async function getContenidoByIdUsuario(req, res, next) {
     try {
         const usuarioId = new ObjectId(req.params.id);
@@ -66,6 +72,7 @@ export async function getContenidoByIdUsuario(req, res, next) {
 }
 
 // Actualizar estado (admin)->  PATCH /api/contenido/:id/estado
+
 export async function actualizarEstadoContenido(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
@@ -78,11 +85,13 @@ export async function actualizarEstadoContenido(req, res, next) {
         if (nuevoEstado !== "aprobada" && nuevoEstado !== "rechazada") {
             return errorResponse(res, `Transición inválida: Estado nuevo debe ser aprobada o rechazada`, 400,"INVALID_TRANSITION");
         }
+      
         const { value: updated } = await col().findOneAndUpdate(
             { _id },
             { $set: { estado: nuevoEstado, updatedAt: new Date() } },
             { returnDocument: "after" }
         );
+      
         return successResponse(res, updated);
     } catch (err) {
         return next(err);
@@ -90,6 +99,7 @@ export async function actualizarEstadoContenido(req, res, next) {
 }
 
 // Eliminar contenido (admin)->  DELETE /api/contenido/:id
+
 export async function eliminarContenido(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
@@ -102,5 +112,3 @@ export async function eliminarContenido(req, res, next) {
         return next(err);
     }
 }
-
-
