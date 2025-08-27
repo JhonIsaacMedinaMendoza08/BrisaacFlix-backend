@@ -8,7 +8,6 @@ import { createdResponse, successResponse, errorResponse } from "../utils/respon
 
 // Acceso a colecciones para contenidos
 function colContenido() { return getCollection("contenido"); }
-function colResenias() { return getCollection("resenias"); }
 
 // Funcion para paginacion correcta de datos
 function parsePagination(req, defaultLimit = 10) {
@@ -325,6 +324,43 @@ export async function eliminarContenido(req, res, next) {
       return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
     }
     return successResponse(res, { deleted: true });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+// filtrado por categoria -> GET /api/v1/contenidos/categoria/:categoria
+export async function getContenidosByCategoria(req, res, next) {
+  try {
+    const categoria = req.params.categoria;
+
+    const contenidos = await colContenido().find({
+      "generos.name": categoria
+    }).toArray();
+
+    return successResponse(res, contenidos, {
+      message: `Contenidos filtrados por categoría: ${categoria}`
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+// filtrado por titulo -> GET /api/v1/contenidos/buscar?titulo=naruto
+export async function searchContenidosByTitulo(req, res, next) {
+  try {
+    const titulo = req.params.titulo;
+    if (!titulo) {
+      return errorResponse(res, "El parámetro 'titulo' es requerido", 400, "VALIDATION_ERROR");
+    }
+
+    const contenidos = await colContenido().find({
+      titulo: { $regex: titulo, $options: "i" } // búsqueda insensible a mayúsculas/minúsculas
+    }).toArray();
+
+    return successResponse(res, contenidos, {
+      message: `Resultados de búsqueda para: ${titulo}`
+    });
   } catch (err) {
     return next(err);
   }

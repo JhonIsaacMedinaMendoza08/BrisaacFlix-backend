@@ -43,7 +43,7 @@ export async function crearResenia(req, res, next) {
             titulo: req.body.titulo,
             comentario: req.body.comentario,
             calificacion: req.body.calificacion,
-            usuarioId: req.user._id // Autenticacion de usuario requerida
+            usuarioId: req.body.usuarioId // Autenticacion de usuario requerida
         });
 
         resenia.validar();
@@ -70,12 +70,12 @@ export async function eliminarResenia(req, res, next) {
   try {
     const _id = new ObjectId(req.params.id);
     const reseña = await col().findOne({ _id });
-
+    console.log(reseña);
     if (!reseña) {
       return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
     }
 
-    if (reseña.usuarioId.toString() !== req.user._id.toString() && req.user.rol !== "admin") {
+    if (reseña.usuarioId.toString() !== req.user.id.toString() && req.user.rol !== "admin") {
       return errorResponse(res, "No autorizado para eliminar esta reseña", 403, "FORBIDDEN");
     }
 
@@ -96,7 +96,9 @@ export async function updateResenia(req, res, next) {
       return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
     }
 
-    if (reseña.usuarioId.toString() !== req.user._id.toString()) {
+    // Solo el autor de la reseña puede modificarla
+    console.log(reseña.usuarioId.toString(), req.user.id.toString())
+    if (reseña.usuarioId.toString() !== req.user.id.toString()) {
       return errorResponse(res, "No autorizado para modificar esta reseña", 403, "FORBIDDEN");
     }
 
@@ -107,6 +109,7 @@ export async function updateResenia(req, res, next) {
 
     await col().updateOne({ _id }, { $set: set });
     const updated = await col().findOne({ _id });
+
     return successResponse(res, updated, { message: "Reseña actualizada correctamente" });
   } catch (err) {
     return next(err);
@@ -130,21 +133,41 @@ export async function votarResenia(req, res, next) {
     const opuesto = tipo === "like" ? "dislikesUsuarios" : "likesUsuarios";
 
     // Evitar doble voto
-    if (reseña[campo]?.includes(req.user._id)) {
+    if (reseña[campo]?.includes(req.user.id)) {
       return errorResponse(res, `Ya diste ${tipo} a esta reseña`, 400, "ALREADY_VOTED");
     }
 
     await col().updateOne(
       { _id },
       {
-        $addToSet: { [campo]: req.user._id },
-        $pull: { [opuesto]: req.user._id },
+        $addToSet: { [campo]: req.user.id },
+        $pull: { [opuesto]: req.user.id },
         $set: { updatedAt: new Date() },
       }
     );
 
     const updated = await col().findOne({ _id });
     return successResponse(res, updated, { message: `Voto registrado (${tipo})` });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+// -> GET /api/v1/resenias/buscar?titulo=naruto
+export async function searchReseniasByTitulo(req, res, next) {
+  try {
+    const titulo = req.params.titulo;
+    if (!titulo) {
+      return errorResponse(res, "El parámetro 'titulo' es requerido", 400, "VALIDATION_ERROR");
+    }
+
+    const resenias = await col().find({
+      titulo: { $regex: titulo, $options: "i" } // búsqueda insensible a mayúsculas/minúsculas
+    }).toArray();
+
+    return successResponse(res, resenias, {
+      message: `Reseñas encontradas para: ${titulo}`
+    });
   } catch (err) {
     return next(err);
   }

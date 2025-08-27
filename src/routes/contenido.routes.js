@@ -22,6 +22,8 @@ import {
     editarContenido,
     actualizarEstadoContenido,
     eliminarContenido,
+    getContenidosByCategoria,
+    searchContenidosByTitulo
 } from "../controllers/contenido.controller.js";
 
 // Inicializacion de rutas de express
@@ -30,13 +32,15 @@ const routes = Router();
 // Rutas Publicas
 routes.get("/", listarPublicoRules, validate, listarPublico); // Para obtener Todo el contenido
 routes.get("/:id", getContenidoByIdRules, validate, getContenidoById); // Para obtener un Contenido por ID
+routes.get("/categoria/:categoria", getContenidosByCategoria); // Para filtrar por categoria
+routes.get("/titulo/:titulo", searchContenidosByTitulo); // Para filtrar por titulo
 
 // Rutas Rutas protegidas (requieren login)
 routes.use(passport.authenticate("jwt", { session: false }), authMiddleware);
 
 // Usuario autenticado
 routes.post("/", crearContenidoRules, validate, crearContenido); // Post para crear Contenido 
-routes.get("/mios/listado", listarMisContenidosRules, validate, listarMisContenidos); // GET Para obetern el contenido creado por el usuario
+routes.get("/:id/listado", listarMisContenidosRules, validate, listarMisContenidos); // GET Para obetern el contenido creado por el usuario
 routes.patch("/:id", editarContenidoRules, validate, editarContenido); // PATCH para editar el contenido propio
 
 // Admin
