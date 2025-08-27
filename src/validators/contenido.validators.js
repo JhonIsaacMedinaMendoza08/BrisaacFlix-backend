@@ -6,7 +6,7 @@ import { ObjectId } from "mongodb";
 // Conjunto de estados válidos
 const ESTADOS = ["pendiente", "aprobada", "rechazada"];
 
-// 1. Listar Contenido → permite opcionalmente filtros como ?estado, ?anio
+// 1. Listar todo el contenido → 
 export const listarContenidoRules = [
     query("estado")
         .optional()
@@ -17,6 +17,10 @@ export const listarContenidoRules = [
         .matches(/^\d{4}$/)
         .withMessage("anio debe ser formato YYYY"),
 ];
+// Miesmas reglas para Contenido Aceptado y Pendiente
+export const listarContenidoAceptadaRules = listarContenidoRules;
+export const listarContenidoPendienteRules = listarContenidoRules;
+
 
 // 2. Obtener contenido por ID
 export const getContenidoByIdRules = [

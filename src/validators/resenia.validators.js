@@ -72,33 +72,21 @@ export const updateReseniaByIdRules = [
         .trim()
         .custom(val => ObjectId.isValid(val))
         .withMessage("El parámetro :id debe ser un ObjectId válido"),
-        
+
     body("titulo")
-        .exists()
-        .withMessage("titulo requerido")
-        .bail()
+        .optional()
         .isString()
-        .withMessage("titulo debe ser string")
-        .bail()
-        .notEmpty()
-        .withMessage("titulo no puede estar vacío"),
+        .withMessage("titulo debe ser string"),
 
     body("comentario")
-        .exists()
-        .withMessage("comentario requerida")
-        .bail()
+        .optional()
         .isString()
-        .withMessage("sinocomentariopsis debe ser string")
-        .bail()
-        .notEmpty()
-        .withMessage("comentario no puede estar vacía"),
+        .withMessage("comentario debe ser string"),
 
     body("calificacion")
-        .exists()
-        .withMessage("calificacion requerido")
-        .bail()
-        .isInt({ min: 0 })
-        .withMessage("calificacion debe ser un número positivo"),
+        .optional()
+        .isInt({ min: 0, max: 10 })
+        .withMessage("calificacion debe ser entre 0 y 10"),
 ];
 
 // 6. Eliminar contenido (solo Admin)

@@ -11,22 +11,41 @@ function col() {
     return getCollection("contenido");
 }
 
-
-// Listar contenido (público)  ->  GET /api/contenido
+// Listar todo el contenido (admin)  ->  GET /api/contenido
 export async function listarContenido(_req, res, next) {
     try {
-        const tareas = await col().find().sort({ createdAt: -1 }).toArray();
-        return successResponse(res, tareas, { total: tareas.length });
+        const contenido = await col().find().sort({ createdAt: -1 }).toArray();
+        return successResponse(res, contenido, { total: contenido.length });
     } catch (err) {
     return next(err);
     }
 }
 
-// Obtener Reseñas por ID ->  GET /api/contenido/:id
+// Listar contenido con estado "aprobada" (público)  ->  GET /api/contenido/aprobada
+export async function getContenidoAprobada(_req, res, next) {
+    try {
+        const contenido = await col().find({ estado: "aprobada" }).sort({ createdAt: -1 }).toArray();
+        return successResponse(res, contenido, { total: contenido.length });
+    } catch (err) {
+        return next(err);
+    }
+}
 
+// Listar contenido con estado "pendiente" (admin)  ->  GET /api/contenido/pendiente
+export async function listarContenidoPendiente(_req, res, next) {
+    try {
+        const contenido = await col().find({ estado: "pendiente" }).sort({ createdAt: -1 }).toArray();
+        return successResponse(res, contenido, { total: contenido.length });
+    } catch (err) {
+        return next(err);
+    }
+}
+
+// Obtener Reseñas por ID ->  GET /api/contenido/:id
 export async function getContenidoById(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
+
         const doc = await col().findOne({ _id });
         if (!doc) {
             return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
@@ -37,7 +56,7 @@ export async function getContenidoById(req, res, next) {
     }
 }
 
-// Crear contenido (usuario autenticado) ->  POST /api/contenido
+// Crear contenido (usuario autenticado) ->  POST /api/:id/contenido
 export async function crearContenido(req, res, next) {
     try {
         const contenido = new Contenido({
@@ -50,6 +69,11 @@ export async function crearContenido(req, res, next) {
             estado: req.body.estado,
             usuarioId: req.body.usuarioId
         });
+        // Verificacion de duplicidad de Titulo
+        const existe = await col().findOne({ titulo: contenido.titulo });
+        if (existe) {
+            return errorResponse(res, "El titulo ya está registrado", 409, "TITULO_DUPLICADO");
+        }
         contenido.validar();
         const { insertedId } = await col().insertOne(contenido.toDocument());
         return createdResponse(res, { id: insertedId });
@@ -59,11 +83,14 @@ export async function crearContenido(req, res, next) {
     }
 }
 
-// Contenido por usuario ->  GET /api/contenido/usuario/:id
-
+// Contenido por usuario (usuario autenticado) ->  GET /api/contenido/usuario/:id
 export async function getContenidoByIdUsuario(req, res, next) {
     try {
         const usuarioId = new ObjectId(req.params.id);
+        if (req.user.rol !== "admin" && !usuarioId.equals(req.user._id)) {
+            return errorResponse(res, "No autorizado para ver este contenido", 403, "FORBIDDEN");
+        }
+
         const docs = await col().find({ usuarioId }).toArray();
         return successResponse(res, docs);
     } catch (err) {
@@ -72,26 +99,29 @@ export async function getContenidoByIdUsuario(req, res, next) {
 }
 
 // Actualizar estado (admin)->  PATCH /api/contenido/:id/estado
-
 export async function actualizarEstadoContenido(req, res, next) {
     try {
+        if (req.user.rol !== "admin") {
+            return errorResponse(res, "No autorizado", 403, "FORBIDDEN");
+        }
+
         const _id = new ObjectId(req.params.id);
         const nuevoEstado = req.body.estado;
-        console.log(nuevoEstado);        
-        const contenido = await col().findOne({ _id });
-        if (!contenido) {
-            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
+
+        if (!["aprobada", "rechazada"].includes(nuevoEstado)) {
+            return errorResponse(res, "Estado inválido", 400, "INVALID_TRANSITION");
         }
-        if (nuevoEstado !== "aprobada" && nuevoEstado !== "rechazada") {
-            return errorResponse(res, `Transición inválida: Estado nuevo debe ser aprobada o rechazada`, 400,"INVALID_TRANSITION");
-        }
-      
+
         const { value: updated } = await col().findOneAndUpdate(
             { _id },
             { $set: { estado: nuevoEstado, updatedAt: new Date() } },
             { returnDocument: "after" }
         );
-      
+
+        if (!updated) {
+            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
+        }
+
         return successResponse(res, updated);
     } catch (err) {
         return next(err);
@@ -99,14 +129,20 @@ export async function actualizarEstadoContenido(req, res, next) {
 }
 
 // Eliminar contenido (admin)->  DELETE /api/contenido/:id
-
 export async function eliminarContenido(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
-        const { deletedCount } = await col().deleteOne({ _id });
-        if (deletedCount === 0) {
+        const contenido = await col().findOne({ _id });
+
+        if (!contenido) {
             return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
         }
+
+        if (req.user.rol !== "admin" && !contenido.usuarioId.equals(req.user._id)) {
+            return errorResponse(res, "No tienes permiso para eliminar", 403, "FORBIDDEN");
+        }
+
+        await col().deleteOne({ _id });
         return successResponse(res, { deleted: true });
     } catch (err) {
         return next(err);
