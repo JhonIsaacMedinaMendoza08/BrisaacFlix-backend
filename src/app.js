@@ -1,11 +1,12 @@
 import express from "express";
+import cors from "cors";
 //import swaggerUi from "swagger-ui-express";
 //import fs from "fs";
 //import path from "path";
 import { fileURLToPath } from "url";
 
 import userRoutes from "./routes/usuario.routes.js";
-import passport  from "./config/passport.js";
+import passport from "./config/passport.js";
 import versionRouter from "./routes/version.routes.js";
 //import { limiter } from "./middlewares/limiter.js";
 
@@ -16,8 +17,13 @@ import versionRouter from "./routes/version.routes.js";
 //const swaggerDocumentJson = JSON.parse(
 //    fs.readFileSync(path.join(__dirname, "swagger/swagger.json"), "utf-8")
 //);
-
 const app = express();
+
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Middlewares globales
 app.use(express.json());
@@ -40,10 +46,5 @@ app.use("/api/v1/usuarios", userRoutes);
 //Version endpoint
 app.use("/version", versionRouter);
 
-// 404 Handler
-//app.use((req, res) => res.status(404).json({ message: "Not Found" }));
-
-// Error handler
-//app.use(errorHandler);
 
 export default app;
