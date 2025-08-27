@@ -148,6 +148,8 @@ MONGODB_URI=mongodb+srv://reservation_admin:admin1234@mycluster.vlbhwms.mongodb.
 DB_NAME=brisaacflix
 NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000
+JWT_SECRET=claveSuperSecreta123
+API_VERSION=1.0.0
 ```
 
 ---
