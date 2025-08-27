@@ -1,3 +1,5 @@
+// Zona de importacion de modulos
+
 import { body, param, query } from "express-validator";
 import { ObjectId } from "mongodb";
 

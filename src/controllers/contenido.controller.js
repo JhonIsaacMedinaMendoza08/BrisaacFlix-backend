@@ -1,37 +1,29 @@
-// src/controllers/contenido.controller.js
-import { ObjectId } from "mongodb";
-import { Tarea } from "../models/contenido.model.js"; 
-import { getCollection } from "../config/db.js"; 
-import { successResponse, errorResponse } from "../utils/responses.js";
 
-// Helpers para respuestas estándar
-function successResponse(res, data, status = 200) {
-    return res.status(status).json({ ok: true, data });
-}
-function errorResponse(res, message, status = 400, code = "ERROR") {
-    return res.status(status).json({ ok: false, error: { message, code } });
-}
+// Zona de importacion de modulos
+import { ObjectId } from "mongodb";
+import { Contenido } from "../models/contenido.model.js"; 
+import { getCollection } from "../config/db.js"; 
+import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
+
 
 // Reutilizamos la colección "contenido"
 function col() {
     return getCollection("contenido");
 }
 
-// Listar contenido (público)
-export async function listarContenido(req, res, next) {
-    try {
-        const filtro = {};
-        if (req.query.estado) filtro.estado = req.query.estado;
-        if (req.query.anio) filtro.anio = req.query.anio;
 
-        const contenido = await col().find(filtro).toArray();
-        return successResponse(res, contenido);
+// Listar contenido (público)  ->  GET /api/contenido
+export async function listarContenido(_req, res, next) {
+    try {
+        const tareas = await col().find().sort({ createdAt: -1 }).toArray();
+        return successResponse(res, tareas, { total: tareas.length });
     } catch (err) {
-        return next(err);
+    return next(err);
     }
 }
 
-// Obtener contenido por ID
+// Obtener Reseñas por ID ->  GET /api/contenido/:id
+
 export async function getContenidoById(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
@@ -45,22 +37,30 @@ export async function getContenidoById(req, res, next) {
     }
 }
 
-// Crear contenido (usuario autenticado)
+// Crear contenido (usuario autenticado) ->  POST /api/contenido
 export async function crearContenido(req, res, next) {
     try {
-        const tarea = new Tarea(req.body);
-        tarea.validar();
+        const contenido = new Contenido({
+            tmdbId: req.body.tmdbId,
+            titulo: req.body.titulo,
+            sinopsis: req.body.sinopsis,
+            anio: req.body.anio,
+            poster: req.body.poster,
+            generos: req.body.generos,
+            estado: req.body.estado,
+            usuarioId: req.body.usuarioId
+        });
+        contenido.validar();
+        const { insertedId } = await col().insertOne(contenido.toDocument());
+        return createdResponse(res, { id: insertedId });
 
-        const { insertedId } = await col().insertOne(tarea.toDocument());
-        const creado = await col().findOne({ _id: insertedId });
-
-        return successResponse(res, creado, 201);
     } catch (err) {
     return next(err);
     }
 }
 
-// Contenido por usuario
+// Contenido por usuario ->  GET /api/contenido/usuario/:id
+
 export async function getContenidoByIdUsuario(req, res, next) {
     try {
         const usuarioId = new ObjectId(req.params.id);
@@ -71,26 +71,35 @@ export async function getContenidoByIdUsuario(req, res, next) {
     }
 }
 
-// Actualizar estado (admin)
+// Actualizar estado (admin)->  PATCH /api/contenido/:id/estado
+
 export async function actualizarEstadoContenido(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
         const nuevoEstado = req.body.estado;
+        console.log(nuevoEstado);        
+        const contenido = await col().findOne({ _id });
+        if (!contenido) {
+            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
+        }
+        if (nuevoEstado !== "aprobada" && nuevoEstado !== "rechazada") {
+            return errorResponse(res, `Transición inválida: Estado nuevo debe ser aprobada o rechazada`, 400,"INVALID_TRANSITION");
+        }
+      
         const { value: updated } = await col().findOneAndUpdate(
             { _id },
             { $set: { estado: nuevoEstado, updatedAt: new Date() } },
             { returnDocument: "after" }
         );
-        if (!updated) {
-            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
-        }
+      
         return successResponse(res, updated);
     } catch (err) {
         return next(err);
     }
 }
 
-// Eliminar contenido (admin)
+// Eliminar contenido (admin)->  DELETE /api/contenido/:id
+
 export async function eliminarContenido(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
