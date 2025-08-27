@@ -1,8 +1,11 @@
+// Zona de importacion de modulos
 import express from "express";
 //import swaggerUi from "swagger-ui-express";
 //import fs from "fs";
 //import path from "path";
 import { fileURLToPath } from "url";
+import contenidoRoutes from "./routes/contenido.routes.js";
+import reseniasRoutes from "./routes/resenia.routes.js";
 
 //import userRoutes from "./routes/routers.js";
 //import errorHandler from "./middlewares/errorHandler.js";
@@ -27,6 +30,12 @@ app.use(express.json());
 app.get("/api/health", (req, res) => {
     res.json({ status: "ok", time: new Date().toISOString() });
 });
+
+// Rutas de Contenido
+app.use("/api/contenido", contenidoRoutes);
+
+// Rutas de Reseñas
+app.use("/api/resenias", reseniasRoutes);
 
 // Rutas principales
 //app.use("/api/user", userRoutes);

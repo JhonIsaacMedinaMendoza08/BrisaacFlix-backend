@@ -50,20 +50,6 @@ export const crearReseniaRules = [
         .isInt({ min: 0 })
         .withMessage("calificacion debe ser un número positivo"),
         
-    body("contadorLike")
-        .exists()
-        .withMessage("contadorLike requerido")
-        .bail()
-        .isInt({ min: 0 })
-        .withMessage("contadorLike debe ser un número positivo"),
-
-    body("contadoDisLike")
-        .exists()
-        .withMessage("contadoDisLike requerido")
-        .bail()
-        .isInt({ min: 0 })
-        .withMessage("contadoDisLike debe ser un número positivo"),
-
     body("usuarioId")
         .exists()
         .withMessage("usuarioId requerido")
@@ -73,7 +59,7 @@ export const crearReseniaRules = [
 ];
 
 // 4. Obtener Reseña creado por usuario
-export const getReseniaByIdUsuarioRules = [
+export const getReseniasByIdUsuarioRules = [
     param("id")
         .trim()
         .custom(val => ObjectId.isValid(val))
@@ -116,7 +102,7 @@ export const updateReseniaByIdRules = [
 ];
 
 // 6. Eliminar contenido (solo Admin)
-export const eliminarRseniaRules = [
+export const eliminarReseniaRules = [
     param("id")
         .trim()
         .isMongoId()

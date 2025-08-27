@@ -1,15 +1,16 @@
-// src/controllers/contenido.controller.js
+// Zona de importacion de modulos
 import { ObjectId } from "mongodb";
-import { Tarea } from "../models/contenido.model.js"; 
+import { Resenia } from "../models/resenia.model.js"; 
 import { getCollection } from "../config/db.js"; 
-import { successResponse, errorResponse } from "../utils/responses.js";
+import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
+import { log } from "console";
 
 // Reutilizamos la colección "Resenias"
 function col() {
     return getCollection("resenias");
 }
 
-// Listar reseñas (público)
+// Listar Reseñas (público) ->  GET /api/resenias
 export async function listarResenias(req, res, next) {
     try {
         const filtro = {};
@@ -23,8 +24,8 @@ export async function listarResenias(req, res, next) {
     }
 }
 
-// Obtener contenido por ID
-export async function getContenidoById(req, res, next) {
+// Obtener Reseñas por ID ->  GET /api/resenias/:id
+export async function getReseniaById(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
         const doc = await col().findOne({ _id });
@@ -37,23 +38,26 @@ export async function getContenidoById(req, res, next) {
     }
 }
 
-// Crear contenido (usuario autenticado)
-export async function crearContenido(req, res, next) {
+// Crear Reseña (usuario autenticado) ->  POST /api/resenias
+export async function crearResenia(req, res, next) {
     try {
-        const tarea = new Tarea(req.body);
-        tarea.validar();
-
-        const { insertedId } = await col().insertOne(tarea.toDocument());
-        const creado = await col().findOne({ _id: insertedId });
-
-        return successResponse(res, creado, 201);
+        const resenia = new Resenia({
+            contenidoId: req.body.contenidoId,
+            titulo: req.body.titulo,
+            comentario: req.body.comentario,
+            calificacion: req.body.calificacion,
+            usuarioId: req.body.usuarioId
+        });
+        resenia.validar();
+        const { insertedId } = await col().insertOne(resenia.toDocument());
+        return createdResponse(res, { id: insertedId });
     } catch (err) {
     return next(err);
     }
 }
 
-// Contenido por usuario
-export async function getContenidoByIdUsuario(req, res, next) {
+// Obtener Reseñas por usuario ->  GET /api/resenias/usuario/:id
+export async function getReseniasByIdUsuario(req, res, next) {
     try {
         const usuarioId = new ObjectId(req.params.id);
         const docs = await col().find({ usuarioId }).toArray();
@@ -63,35 +67,48 @@ export async function getContenidoByIdUsuario(req, res, next) {
     }
 }
 
-// Actualizar estado (admin)
-export async function actualizarEstadoContenido(req, res, next) {
+// Eliminar Reseña ->  DELETE /api/resenias/:id
+export async function eliminarResenia(req, res, next) {
     try {
         const _id = new ObjectId(req.params.id);
-        const nuevoEstado = req.body.estado;
-        const { value: updated } = await col().findOneAndUpdate(
-            { _id },
-            { $set: { estado: nuevoEstado, updatedAt: new Date() } },
-            { returnDocument: "after" }
-        );
-        if (!updated) {
-            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
+        const { deletedCount } = await col().deleteOne({ _id });
+        if (deletedCount === 0) {
+            return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
         }
-        return successResponse(res, updated);
+        return successResponse(res, { deleted: true });
     } catch (err) {
         return next(err);
     }
 }
 
-// Eliminar contenido (admin)
-export async function eliminarContenido(req, res, next) {
+// PUT || PATCH /api/resenias/:id
+export async function updateResenia(req, res, next) {
     try {
-        const _id = new ObjectId(req.params.id);
-        const { deletedCount } = await col().deleteOne({ _id });
-        if (deletedCount === 0) {
-            return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
-        }
-        return successResponse(res, { deleted: true });
+    const _id = new ObjectId(req.params.id);
+
+    // Construir $set solo con lo que venga
+    const set = { updatedAt: new Date() };
+    if (typeof req.body.titulo === "string") set.titulo = req.body.titulo.trim();
+    if (typeof req.body.comentario === "string") set.comentario = req.body.comentario.trim();
+    
+    const upd = await col().updateOne({ _id }, { $set: set });
+
+    if (upd.matchedCount === 0) {
+        return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
+    }
+
+    const updated = await col().findOne({ _id });
+    return successResponse(res, updated, { message: "Reseña actualizada correctamente" });
     } catch (err) {
-        return next(err);
+    if (err?.code === 11000) {
+        return errorResponse(
+        res,
+        "El nombre de Reseña ya existe",
+        409,
+        "DUPLICATE_KEY",
+        { key: "nombre" }
+        );
+    }
+    return next(err);
     }
 }

@@ -11,7 +11,7 @@ export class Resenia{
         this.contenidoId = contenidoId ? new ObjectId(contenidoId) : null;
         this.titulo = titulo?.trim();
         this.comentario = comentario?.trim();
-        this.calificacion = calificacion?.trim();
+        this.calificacion = calificacion;
         this.contadorLike = contadorLike;
         this.contadorDisLike = contadorDisLike;
         // Control de creacion
@@ -55,16 +55,9 @@ export class Resenia{
         if (!this.comentario || typeof this.comentario !== "string") {
             throw new Error("comentario requerida/ inválida");
         }
-        if (!this.calificacion || typeof this.calificacion !== "number" || this.calificacion >= 0 & this.calificacion <= 10) {
+        // calificacion requerida
+        if (!this.calificacion || typeof this.calificacion !== "number" || this.calificacion <= 0 & this.calificacion >= 10) {
             throw new Error("calificacion requerido y debe ser numérico y un valor entre 0 y 10");
-        }
-        // contador de Likes requerido
-        if (!this.contadorLike || typeof this.contadorLike !== 0) {
-            throw new Error("contador de Likes debe iniciar en 0");
-        }
-        // contador de disLikes requerido
-        if (!this.contadorDisLike || typeof this.contadorDisLike !== 0) {
-            throw new Error("contador de disLikes debe iniciar en 0");
         }
         // usuarioId debe ser ObjectId
         if (!(this.usuarioId instanceof ObjectId)) {
