@@ -26,7 +26,7 @@ export class Contenido{
     }
     // Zona de creacion de metodos
 
-    // 🔹 1. Serializar a documento plano (para guardar en MongoDB)
+    // Serializar a documento plano (para guardar en MongoDB)
     toDocument() {
     return {
         ...(this._id && { _id: this._id }),
@@ -42,12 +42,12 @@ export class Contenido{
         updatedAt: this.updatedAt,
         };
     }
-    // 🔹 2. Reconstruir instancia desde documento plano de MongoDB
+    // Reconstruir instancia desde documento plano de MongoDB
     static fromDocument(doc) {
         if (!doc) return null;
         return new Contenido(doc);
     }
-    // 🔹 3. Validar datos de negocio y formato
+    // Validar datos de negocio y formato
     validar() {
         // tmdbId requerido y debe ser número
         if (!this.tmdbId || typeof this.tmdbId !== "number") {

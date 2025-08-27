@@ -3,122 +3,80 @@
 import { body, param, query } from "express-validator";
 import { ObjectId } from "mongodb";
 
-// Conjunto de estados válidos
+// Arrays de datos fijos para comparaciones
 const ESTADOS = ["pendiente", "aprobada", "rechazada"];
+const SORTS = ["newest", "oldest", "topRated", "mostReviewed"];
 
-// 1. Listar todo el contenido → 
-export const listarContenidoRules = [
-    query("estado")
-        .optional()
-        .isIn(ESTADOS)
-        .withMessage(`estado inválido (use: ${ESTADOS.join(" | ")})`),
-    query("anio")
-        .optional()
-        .matches(/^\d{4}$/)
-        .withMessage("anio debe ser formato YYYY"),
+
+// 1. LISTA PÚBLICA: /api/contenido  (solo aprobados, con filtros)
+export const listarPublicoRules = [
+  query("q").optional().isString().trim().isLength({ min: 1 }).withMessage("q debe ser string"),
+  query("generoId").optional().isInt({ min: 1 }).withMessage("generoId debe ser numérico"),
+  query("anio").optional().matches(/^\d{4}$/).withMessage("anio debe ser formato YYYY"),
+  query("sort").optional().isIn(SORTS).withMessage(`sort inválido (use: ${SORTS.join(" | ")})`),
+  query("page").optional().isInt({ min: 1 }).toInt().withMessage("page debe ser entero >= 1"),
+  query("limit").optional().isInt({ min: 1, max: 100 }).toInt().withMessage("limit debe ser 1..100"),
 ];
-// Miesmas reglas para Contenido Aceptado y Pendiente
-export const listarContenidoAceptadaRules = listarContenidoRules;
-export const listarContenidoPendienteRules = listarContenidoRules;
 
+// 2. LISTA ADMIN: /api/contenido/admin
+export const listarAdminRules = [
+  query("estado").optional().isIn(ESTADOS).withMessage(`estado inválido (use: ${ESTADOS.join(" | ")})`),
+  query("q").optional().isString().trim(),
+  query("anio").optional().matches(/^\d{4}$/).withMessage("anio debe ser formato YYYY"),
+  query("page").optional().isInt({ min: 1 }).toInt(),
+  query("limit").optional().isInt({ min: 1, max: 100 }).toInt(),
+];
 
-// 2. Obtener contenido por ID
+// 3. Obtener contenido por ID
 export const getContenidoByIdRules = [
-    param("id")
-        .trim()
-        .isMongoId()
-        .withMessage("El parámetro :id debe ser un ObjectId válido"),
+    query("page").optional().isInt({ min: 1 }).toInt(),
+    query("limit").optional().isInt({ min: 1, max: 100 }).toInt(),
 ];
 
-// 3. Crear Contenido (usuario autenticado)
+// 4. Crear Contenido (usuario autenticado)
 export const crearContenidoRules = [
-    body("tmdbId")
-        .exists()
-        .withMessage("tmdbId requerido")
-        .bail()
-        .isInt({ min: 1 })
-        .withMessage("tmdbId debe ser un número positivo"),
-
-    body("titulo")
-        .exists()
-        .withMessage("titulo requerido")
-        .bail()
-        .isString()
-        .withMessage("titulo debe ser string")
-        .bail()
-        .notEmpty()
-        .withMessage("titulo no puede estar vacío"),
-
-    body("sinopsis")
-        .exists()
-        .withMessage("sinopsis requerida")
-        .bail()
-        .isString()
-        .withMessage("sinopsis debe ser string")
-        .bail()
-        .notEmpty()
-        .withMessage("sinopsis no puede estar vacía"),
-
-    body("anio")
-        .exists()
-        .withMessage("anio requerido")
-        .bail()
-        .matches(/^\d{4}$/)
-        .withMessage("anio inválido (use formato YYYY)"),
-
-    body("poster")
-        .exists()
-        .withMessage("poster requerido")
-        .bail()
-        .isURL()
-        .withMessage("poster debe ser una URL válida"),
-
-    body("generos")
-        .optional()
-        .isArray()
-        .withMessage("generos debe ser un array"),
-
-    body("estado")
-        .optional()
-        .isIn(ESTADOS)
-        .withMessage(`estado inválido (use: ${ESTADOS.join(" | ")})`),
-
-    body("usuarioId")
-        .exists()
-        .withMessage("usuarioId requerido")
-        .bail()
-        .custom(val => ObjectId.isValid(val))
-        .withMessage("usuarioId debe ser un ObjectId válido"),
+    body("tmdbId").exists().withMessage("tmdbId requerido").bail().isInt({ min: 1 }).withMessage("tmdbId debe ser un número positivo"),
+    body("titulo").exists().withMessage("titulo requerido").bail().isString().notEmpty(),
+    body("sinopsis").exists().withMessage("sinopsis requerida").bail().isString().notEmpty(),
+    body("anio").exists().withMessage("anio requerido").bail().matches(/^\d{4}$/).withMessage("anio inválido (YYYY)"),
+    body("poster").exists().withMessage("poster requerido").bail().isURL().withMessage("poster debe ser URL válida"),
+    body("generos").optional().isArray().withMessage("generos debe ser un array"),
 ];
 
-// 4. Obtener contenido creado por usuario
-export const getContenidoByIdUsuarioRules = [
-    param("id")
-        .trim()
-        .custom(val => ObjectId.isValid(val))
-        .withMessage("El parámetro :id debe ser un ObjectId válido"),
+// 5. Obtener contenido creado por usuario
+export const listarMisContenidosRules = [
+    param("id").trim().isMongoId().withMessage("El parámetro :id debe ser un ObjectId válido"),
+    body("titulo").optional().isString().notEmpty(),
+    body("sinopsis").optional().isString().notEmpty(),
+    body("anio").optional().matches(/^\d{4}$/).withMessage("anio inválido (YYYY)"),
+    body("poster").optional().isURL().withMessage("poster debe ser URL válida"),
+    body("generos").optional().isArray(),
 ];
 
-// 5. Actualizar estado (solo Admin)
+// 6. Actualizar estado (solo Admin)
 export const actualizarEstadoContenidoRules = [
-    param("id")
-        .trim()
-        .isMongoId()
-        .withMessage("El parámetro :id debe ser un ObjectId válido"),
-
+    param("id").trim().isMongoId().withMessage("El parámetro :id debe ser un ObjectId válido"),
     body("estado")
-        .exists()
-        .withMessage("estado requerido")
+        .exists().withMessage("estado requerido")
         .bail()
         .isString()
-        .withMessage("estado debe ser string")
         .bail()
         .customSanitizer(v => (typeof v === "string" ? v.trim().toLowerCase() : v))
         .isIn(ESTADOS)
         .withMessage(`estado inválido (use: ${ESTADOS.join(" | ")})`),
 ];
 
-// 6. Eliminar contenido (solo Admin)
+// Editar Contenido
+export const editarContenidoRules = [
+  param("id").trim().isMongoId().withMessage("El parámetro :id debe ser un ObjectId válido"),
+  body("titulo").optional().isString().notEmpty(),
+  body("sinopsis").optional().isString().notEmpty(),
+  body("anio").optional().matches(/^\d{4}$/).withMessage("anio inválido (YYYY)"),
+  body("poster").optional().isURL().withMessage("poster debe ser URL válida"),
+  body("generos").optional().isArray(),
+];
+
+// 7. Eliminar contenido (solo Admin)
 export const eliminarContenidoRules = [
     param("id")
         .trim()
