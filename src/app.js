@@ -1,7 +1,7 @@
 // Zona de importacion de modulos
 import express from "express";
-//import swaggerUi from "swagger-ui-express";
-//import fs from "fs";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
 //import path from "path";
 import { fileURLToPath } from "url";
 import contenidoRoutes from "./routes/contenido.routes.js";
@@ -21,6 +21,12 @@ import versionRouter from "./routes/version.routes.js";
 //);
 
 const app = express();
+
+// Leer tu JSON generado
+const swaggerDocument = JSON.parse(fs.readFileSync("./swagger/swagger.json", "utf-8"));
+
+// Montar swagger en la ruta /api-docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Middlewares globales
 app.use(express.json());
