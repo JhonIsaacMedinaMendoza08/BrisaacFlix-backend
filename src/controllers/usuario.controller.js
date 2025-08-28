@@ -71,7 +71,7 @@ export const getUserById = async (req, res) => {
         const { id } = req.params;
 
         // si no es admin, solo puede ver su propio perfil
-        if (req.user.rol !== "admin" && req.user.id !== id) {
+        if (req.user.rol !== "admin" && req.user._id.toString() !== id.toString()) {
             return errorResponse(res, "No tienes permiso para ver este usuario", 403, "FORBIDDEN");
         }
 
@@ -92,7 +92,7 @@ export const updateUser = async (req, res) => {
         const { nombre, email, contrasena } = req.body;
 
         // si no es admin, solo puede actualizar su propio perfil
-        if (req.user.rol !== "admin" && req.user.id !== id) {
+        if (req.user.rol !== "admin" && req.user._id.toString() !== id.toString()) {
             return errorResponse(res, "No tienes permiso para modificar este usuario", 403, "FORBIDDEN");
         }
 
@@ -147,7 +147,6 @@ export const updateUser = async (req, res) => {
     }
 };
 
-
 export const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -155,6 +154,11 @@ export const deleteUser = async (req, res) => {
         // Validar ID
         if (!ObjectId.isValid(id)) {
             return errorResponse(res, "ID inválido", 400, "INVALID_ID");
+        }
+
+        // si no es admin, solo puede actualizar su propio perfil
+        if (req.user.rol !== "admin" && req.user._id.toString() !== id.toString()) {
+            return errorResponse(res, "No tienes permiso para modificar este usuario", 403, "FORBIDDEN");
         }
 
         // Intentar eliminar

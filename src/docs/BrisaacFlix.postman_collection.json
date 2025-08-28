@@ -1,0 +1,3181 @@
+{
+	"info": {
+		"_postman_id": "b343062a-8286-40fd-ac54-0dca60755a9c",
+		"name": "BrisaacFlix",
+		"description": "StartFragmentBrisaacFlix es una aplicación **full-stack** que permite a los usuarios registrar, calificar y rankear películas, animes y series relacionadas con la cultura geek.  El proyecto está dividido en dos partes:  \n\n  \n\\- **Backend** → API desarrollada con **Node.js + Express**.  \n\n\\- **Frontend** → Interfaz web en **HTML + CSS + JS puro** que consume la API.  EndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27104424"
+	},
+	"item": [
+		{
+			"name": "Contenido",
+			"item": [
+				{
+					"name": "Crear Contenido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY4OWJkYzRjMDZhZGE2Y2NkOTZhMiIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzNDU1MiwiZXhwIjoxNzU2MzM4MTUyfQ.s2h8LgvRq7lm9AY_TcOaG28dyWnKQsINoQQVHiexfB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tmdbId\": 31910,\r\n  \"titulo\": \"Naruto Shippūden\",\r\n  \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\r\n  \"anio\": \"2007\",\r\n  \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\r\n  \"generos\": [\r\n    { \"id\": 16, \"name\": \"Animación\" },\r\n    { \"id\": 10759, \"name\": \"Acción y Aventura\" }\r\n  ],\r\n  \"estado\": \"pendiente\",\r\n  \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido"
+							]
+						},
+						"description": "Permite la creacion de nuevo contenido solicitado por un usuario que nicio sesion, se genera con estado \"pendiente\" por defecto para sar luego aprobado por un Administrador."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"tmdbId\": 31910,\r\n  \"titulo\": \"Naruto Shippūden\",\r\n  \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\r\n  \"anio\": \"2007\",\r\n  \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\r\n  \"generos\": [\r\n    { \"id\": 16, \"name\": \"Animación\" },\r\n    { \"id\": 10759, \"name\": \"Acción y Aventura\" }\r\n  ],\r\n  \"estado\": \"pendiente\",\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/contenido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"contenido"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "52",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"34-4vAJU5v5E4/nP858Byh4+PkxodQ\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 17:08:27 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": \"68af3b8bfc6c7cc1739551a1\"\n    }\n}"
+						},
+						{
+							"name": "409 Contenido Duplicado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"tmdbId\": 31910,\r\n  \"titulo\": \"Naruto Shippūden\",\r\n  \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\r\n  \"anio\": \"2007\",\r\n  \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\r\n  \"generos\": [\r\n    { \"id\": 16, \"name\": \"Animación\" },\r\n    { \"id\": 10759, \"name\": \"Acción y Aventura\" }\r\n  ],\r\n  \"estado\": \"pendiente\",\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-WqM709itT2o0z44U4kztfo2pfNI\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 19:39:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"TMDB_DUPLICADO\",\n        \"message\": \"El tmdbId ya fue solicitado\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Todos Los Contenidos Aprobados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido"
+							]
+						},
+						"description": "Permite obtener los datos de todos los contenidos con estado \"Aprobado\" es un endpoint publico para mostrar informacion general a usuarios."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "575"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"23f-36e8lWKz4AZPKePMwjblyOmKqg0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:22:42 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af5ecf46ef00a89f270cdd\",\n            \"tmdbId\": 31910,\n            \"titulo\": \"Naruto Shippūden\",\n            \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\n            \"anio\": \"2007\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 16,\n                    \"name\": \"Animación\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción y Aventura\"\n                }\n            ],\n            \"estado\": \"aprobada\",\n            \"usuarioId\": \"68af5e8946ef00a89f270cdc\",\n            \"createdAt\": \"2025-08-27T19:38:55.751Z\",\n            \"updatedAt\": \"2025-08-27T19:38:55.751Z\",\n            \"ratingCount\": 0,\n            \"ratingAvg\": null\n        }\n    ],\n    \"meta\": {\n        \"page\": 1,\n        \"limit\": 10,\n        \"total\": 1,\n        \"totalPages\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Contenido por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af5ecf46ef00a89f270cdd"
+								}
+							]
+						},
+						"description": "Permite obtener toda la informacion de un contenido especifico enviando el ID por Path, es un endpoint publico para el manejo de mostrar informacion a usuarios."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af5ecf46ef00a89f270cdd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "519"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"207-DMiG8HpxuqhKgAHZ57Oe5ptXKso\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:25:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"_id\": \"68af5ecf46ef00a89f270cdd\",\n        \"tmdbId\": 31910,\n        \"titulo\": \"Naruto Shippūden\",\n        \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\n        \"anio\": \"2007\",\n        \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n        \"generos\": [\n            {\n                \"id\": 16,\n                \"name\": \"Animación\"\n            },\n            {\n                \"id\": 10759,\n                \"name\": \"Acción y Aventura\"\n            }\n        ],\n        \"estado\": \"aprobada\",\n        \"usuarioId\": \"68af5e8946ef00a89f270cdc\",\n        \"createdAt\": \"2025-08-27T19:38:55.751Z\",\n        \"updatedAt\": \"2025-08-27T19:38:55.751Z\",\n        \"ratingCount\": 0,\n        \"ratingAvg\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todo el contenido del Usaurio",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWUxMTU5Mjc1N2RmYjVlNzdlOTBiNyIsImVtYWlsIjoiYWRtaW5AbWlhcHAuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTYzMjY0MDYsImV4cCI6MTc1NjMzMDAwNn0.R5giPIp8D_CgOdSVeKqI_gNtVm6di3lznFEW2aQ871k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/:id/listado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								":id",
+								"listado"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af5e8946ef00a89f270cdc"
+								}
+							]
+						},
+						"description": "Permite ver todo el contenido solicitado por un usuario en especifico, este requiere inicio de session y el ID del usuario para poder traer todo su contenido."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/:id/listado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										":id",
+										"listado"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af5e8946ef00a89f270cdc"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "543"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21f-aDd3GcfZLKKF7XLfB3GICxeuDdQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 19:45:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af5ecf46ef00a89f270cdd\",\n            \"tmdbId\": 31910,\n            \"titulo\": \"Naruto Shippūden\",\n            \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\n            \"anio\": \"2007\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 16,\n                    \"name\": \"Animación\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción y Aventura\"\n                }\n            ],\n            \"estado\": \"pendiente\",\n            \"usuarioId\": \"68af5e8946ef00a89f270cdc\",\n            \"createdAt\": \"2025-08-27T19:38:55.751Z\",\n            \"updatedAt\": \"2025-08-27T19:38:55.751Z\"\n        }\n    ],\n    \"meta\": {\n        \"page\": 1,\n        \"limit\": 10,\n        \"total\": 1,\n        \"totalPages\": 1\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Estado (Admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWUxMTU5Mjc1N2RmYjVlNzdlOTBiNyIsImVtYWlsIjoiYWRtaW5AbWlhcHAuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTYzMjY0MDYsImV4cCI6MTc1NjMzMDAwNn0.R5giPIp8D_CgOdSVeKqI_gNtVm6di3lznFEW2aQ871k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"estado\": \"aprobada\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/:id/estado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								":id",
+								"estado"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af5ecf46ef00a89f270cdd"
+								}
+							]
+						},
+						"description": "Permite actualizar informacion de estado de un contenido por defecto al crearlo es \"pendiente\" solo un administrador inicido sesion puedoe pasar a estado \"aceptada\" o \"rechazada\" segun su criterio."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": \"aprobada\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/:id/estado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										":id",
+										"estado"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af5ecf46ef00a89f270cdd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "23"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"17-kTvLMVYQOV/pMj+jt1UoZY/Aibk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:40:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": null\n}"
+						},
+						{
+							"name": "Error Estasdo",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"estado\": \"prueba\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/:id/estado",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										":id",
+										"estado"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af5ecf46ef00a89f270cdd"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "156"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"9c-gJFeeMyucmt5aYhnKswPTvZpHPk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:41:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"value\": \"prueba\",\n            \"msg\": \"estado inválido (use: pendiente | aprobada | rechazada)\",\n            \"path\": \"estado\",\n            \"location\": \"body\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar un contenido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWUxMTU5Mjc1N2RmYjVlNzdlOTBiNyIsImVtYWlsIjoiYWRtaW5AbWlhcHAuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTYzMjY0MDYsImV4cCI6MTc1NjMzMDAwNn0.R5giPIp8D_CgOdSVeKqI_gNtVm6di3lznFEW2aQ871k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af5ecf46ef00a89f270cdd"
+								}
+							]
+						},
+						"description": "Permite eliminar un contenido especifico inidcando su ID en el path, requiere el inicio de sesion de un Admin o el mismo usuario que solicito este contenido para poder ejecutarse."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af5ecf46ef00a89f270cdd"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "35"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"23-R/ptFdY7ETQeRzqPyiIUhi6qhBg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:42:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"deleted\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Filtrar Por Categoria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY4OWJkYzRjMDZhZGE2Y2NkOTZhMiIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzNDU1MiwiZXhwIjoxNzU2MzM4MTUyfQ.s2h8LgvRq7lm9AY_TcOaG28dyWnKQsINoQQVHiexfB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/categoria/:categoria",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								"categoria",
+								":categoria"
+							],
+							"variable": [
+								{
+									"key": "categoria",
+									"value": "Animación"
+								}
+							]
+						},
+						"description": "Permite obtener toda la informacion de los contenidos actuales filtrador por categoria, requiere el inicio de sesion de un usuario para el filtrado."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/categoria/:categoria",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										"categoria",
+										":categoria"
+									],
+									"variable": [
+										{
+											"key": "categoria",
+											"value": "Animación"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "558"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22e-LVbN9aivyptJKLnAwDM7uMmopis\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 23:12:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af89f9c4c06ada6ccd96a3\",\n            \"tmdbId\": 31910,\n            \"titulo\": \"Naruto Shippūden\",\n            \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\n            \"anio\": \"2007\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 16,\n                    \"name\": \"Animación\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción y Aventura\"\n                }\n            ],\n            \"estado\": \"pendiente\",\n            \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\",\n            \"createdAt\": \"2025-08-27T22:43:05.963Z\",\n            \"updatedAt\": \"2025-08-27T22:43:05.963Z\"\n        }\n    ],\n    \"meta\": {\n        \"message\": \"Contenidos filtrados por categoría: Animación\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Filtrar por titulo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/titulo/:titulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								"titulo",
+								":titulo"
+							],
+							"variable": [
+								{
+									"key": "titulo",
+									"value": "Naruto"
+								}
+							]
+						},
+						"description": "Permite obtener toda la informacion de los contenidos actuales filtrador por titulo, es un endpoint pulico para el manejo de muesra de informacion a usuarios en general que visitan la pagina."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/titulo/:titulo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										"titulo",
+										":titulo"
+									],
+									"variable": [
+										{
+											"key": "titulo",
+											"value": "Naruto"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "547"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"223-BUMplYCCDlzvL59cIf83Fj151gA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 23:12:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af89f9c4c06ada6ccd96a3\",\n            \"tmdbId\": 31910,\n            \"titulo\": \"Naruto Shippūden\",\n            \"sinopsis\": \"Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...\",\n            \"anio\": \"2007\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 16,\n                    \"name\": \"Animación\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción y Aventura\"\n                }\n            ],\n            \"estado\": \"pendiente\",\n            \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\",\n            \"createdAt\": \"2025-08-27T22:43:05.963Z\",\n            \"updatedAt\": \"2025-08-27T22:43:05.963Z\"\n        }\n    ],\n    \"meta\": {\n        \"message\": \"Resultados de búsqueda para: Naruto\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Contenido Por Popularidad",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/contenido/populares?page=1&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"contenido",
+								"populares"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Permite obtener toda la informacion de los contenidos filtrados y ajutados por popularidad envindo en Query params la cantidad de paginas y el limite de datos que se quierebn obtener, en un Endpoint publico para el manejo de muestra de informacion a usuarios en general."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/contenido/populares?page=1&limit=10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"contenido",
+										"populares"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2379"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"94b-r81iXHVzPP2cJ7+RCqsF0yW+Wak\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 28 Aug 2025 12:29:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68afb3654983f0e529f9ac17\",\n            \"titulo\": \"The Mandalorian\",\n            \"anio\": \"2019\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/sWgBv7LV2PRoQgkxwlibdGXKz1S.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 10765,\n                    \"name\": \"Sci-Fi\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 1,\n            \"popularidad\": 5,\n            \"ratingAvg\": 5\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac1a\",\n            \"titulo\": \"The Dark Knight\",\n            \"anio\": \"2008\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 28,\n                    \"name\": \"Acción\"\n                },\n                {\n                    \"id\": 80,\n                    \"name\": \"Crimen\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 1,\n            \"popularidad\": 5,\n            \"ratingAvg\": 5\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac19\",\n            \"titulo\": \"The Avengers\",\n            \"anio\": \"2012\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 28,\n                    \"name\": \"Acción\"\n                },\n                {\n                    \"id\": 12,\n                    \"name\": \"Aventura\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 2,\n            \"popularidad\": 4.5,\n            \"ratingAvg\": 4.5\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac15\",\n            \"titulo\": \"Avatar\",\n            \"anio\": \"2009\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/jRXYjXNq0Cs2TcJjLkki24MLp7u.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 28,\n                    \"name\": \"Acción\"\n                },\n                {\n                    \"id\": 12,\n                    \"name\": \"Aventura\"\n                },\n                {\n                    \"id\": 878,\n                    \"name\": \"Sci-Fi\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 1,\n            \"popularidad\": 4,\n            \"ratingAvg\": 4\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac16\",\n            \"titulo\": \"Stranger Things\",\n            \"anio\": \"2016\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 18,\n                    \"name\": \"Drama\"\n                },\n                {\n                    \"id\": 9648,\n                    \"name\": \"Misterio\"\n                },\n                {\n                    \"id\": 10765,\n                    \"name\": \"Sci-Fi\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 2,\n            \"popularidad\": 4,\n            \"ratingAvg\": 4\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac18\",\n            \"titulo\": \"Interstellar\",\n            \"anio\": \"2014\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 12,\n                    \"name\": \"Aventura\"\n                },\n                {\n                    \"id\": 18,\n                    \"name\": \"Drama\"\n                },\n                {\n                    \"id\": 878,\n                    \"name\": \"Sci-Fi\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 2,\n            \"popularidad\": 4,\n            \"ratingAvg\": 4\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac1d\",\n            \"titulo\": \"The Matrix\",\n            \"anio\": \"1999\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/aoiGjcZ3G6mxF6RxmLq5yRvCNrU.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 28,\n                    \"name\": \"Acción\"\n                },\n                {\n                    \"id\": 878,\n                    \"name\": \"Sci-Fi\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 2,\n            \"popularidad\": 3.5,\n            \"ratingAvg\": 3.5\n        },\n        {\n            \"_id\": \"68afb3654983f0e529f9ac12\",\n            \"titulo\": \"Naruto Shippūden\",\n            \"anio\": \"2007\",\n            \"poster\": \"https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg\",\n            \"generos\": [\n                {\n                    \"id\": 16,\n                    \"name\": \"Animación\"\n                },\n                {\n                    \"id\": 10759,\n                    \"name\": \"Acción y Aventura\"\n                }\n            ],\n            \"estado\": \"aprobado\",\n            \"ratingCount\": 2,\n            \"popularidad\": 3,\n            \"ratingAvg\": 3\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"description": "Comprende la coleccion de Peliculas o Series que los usuarios solicitan agreagr a la plataforma para poder hacer reseñas sobre ellas, estas seran aprobadas o rechazadas por un Administrador."
+		},
+		{
+			"name": "Reseñas",
+			"item": [
+				{
+					"name": "Crear Reseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY4OWJkYzRjMDZhZGE2Y2NkOTZhMiIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzNDU1MiwiZXhwIjoxNzU2MzM4MTUyfQ.s2h8LgvRq7lm9AY_TcOaG28dyWnKQsINoQQVHiexfB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contenidoId\": \"68af89f9c4c06ada6ccd96a3\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias"
+							]
+						},
+						"description": "Permite la creacion de una reseña, esta requiere un contenido minimo en el body y el inicio de sesion de un suaurio en la plataforma para su uso, ya que este debe ser enviado en el body para referenciar a quien pertenece la reseña."
+					},
+					"response": [
+						{
+							"name": "201 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68af60f317c3d034affaad69\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "52"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"34-ZF6RYCA//2okQEFHLLE4NA0IFGc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 19:48:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": \"68af60f317c3d034affaad6a\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todas las Reseñas",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias"
+							]
+						},
+						"description": "Permite obtener la informacion de todas las reseñas actuales en la coleccion, este es un end point publico para el uso de muestreo de uinformacion a usuarios generales de la plataforma."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "397"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18d-Y9dAZ3mpfvIBgccFBqy5D5JIMhc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:52:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af60f317c3d034affaad6a\",\n            \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\n            \"titulo\": \"La Mejor Serie De Ninjas\",\n            \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\n            \"calificacion\": 10,\n            \"usuarioId\": \"68af60f317c3d034affaad69\",\n            \"createdAt\": \"2025-08-27T19:48:03.706Z\",\n            \"updatedAt\": \"2025-08-27T19:48:03.706Z\",\n            \"likesUsuarios\": [],\n            \"dislikesUsuarios\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Reseña por ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/resenias/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"resenias",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68ae447d019589aad29f50d3"
+								}
+							]
+						},
+						"description": "Permite obtener toda la informacion de una reseña en especitico enviando si ID por el path, este es un endpoint publico para el uso de muestreo de informacion a usuarios en general de la plataforma."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af60f317c3d034affaad6a"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "395"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18b-lbvRh8r+TQ9An0lNRv4vFVUboq0\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:54:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"_id\": \"68af60f317c3d034affaad6a\",\n        \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\n        \"titulo\": \"La Mejor Serie De Ninjas\",\n        \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\n        \"calificacion\": 10,\n        \"usuarioId\": \"68af60f317c3d034affaad69\",\n        \"createdAt\": \"2025-08-27T19:48:03.706Z\",\n        \"updatedAt\": \"2025-08-27T19:48:03.706Z\",\n        \"likesUsuarios\": [],\n        \"dislikesUsuarios\": []\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todas las Reseñas de Usuario por Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWUxMTU5Mjc1N2RmYjVlNzdlOTBiNyIsImVtYWlsIjoiYWRtaW5AbWlhcHAuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3NTYzMjY0MDYsImV4cCI6MTc1NjMzMDAwNn0.R5giPIp8D_CgOdSVeKqI_gNtVm6di3lznFEW2aQ871k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias/usuario/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias",
+								"usuario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af60f317c3d034affaad69"
+								}
+							]
+						},
+						"description": "Permite opbtener toda la informacion de todas las reseñas creadas por un usuario por lo cual requiere el envio del ID por medio del path para su filtrado y el inicio de sesion de algun usuario en la plataforma."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\r\n  \"titulo\": \"La Mejor Serie De Ninjas\",\r\n  \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\r\n  \"calificacion\": 10,\r\n  \"usuarioId\": \"68addeb170e0053efe72f213\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/usuario/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										"usuario",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af60f317c3d034affaad69"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "397"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"18d-Y9dAZ3mpfvIBgccFBqy5D5JIMhc\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 20:59:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af60f317c3d034affaad6a\",\n            \"contenidoId\": \"68ae404416f4d8ecbd239f60\",\n            \"titulo\": \"La Mejor Serie De Ninjas\",\n            \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\n            \"calificacion\": 10,\n            \"usuarioId\": \"68af60f317c3d034affaad69\",\n            \"createdAt\": \"2025-08-27T19:48:03.706Z\",\n            \"updatedAt\": \"2025-08-27T19:48:03.706Z\",\n            \"likesUsuarios\": [],\n            \"dislikesUsuarios\": []\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar Reseña por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY3YmViNjU3MGNjNDgzYWY5ZGNiNSIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzMTAzNCwiZXhwIjoxNzU2MzM0NjM0fQ.eb65bpeTJTXwTc67zGRVJ9TyZiayjAeL0fBVMPIRa18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af7dd28609d25f527adce2"
+								}
+							]
+						},
+						"description": "Permite eliminar una reseña por completo de la coleccion esta solo puede ser ejecutada por un administrador o por el mismo usuario que creo la reseña, por lo cual se requiere el inicio de sesion de alguno de los 2 y el Id por medio del path para su correcta eliminacion."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af7dd28609d25f527adce2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "35"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"23-R/ptFdY7ETQeRzqPyiIUhi6qhBg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 22:40:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"deleted\": true\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Reseña",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY3YmViNjU3MGNjNDgzYWY5ZGNiNSIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzMTAzNCwiZXhwIjoxNzU2MzM0NjM0fQ.eb65bpeTJTXwTc67zGRVJ9TyZiayjAeL0fBVMPIRa18",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"La peor Serie De Ninjas\",\r\n  \"comentario\": \"Esta serie es muy abuirrida\",\r\n  \"calificacion\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af7dd28609d25f527adce2"
+								}
+							]
+						},
+						"description": "Permite actualizar o modificar datos de una reseña esta solo puede ser ejecutada por el mismo usuario el cual creo la reseña por lo cual se requiere el inicio de sesion del mismo asi como el ID de la reseña que se desea eliminar por medio del path para su correcta ejecucion."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"La peor Serie De Ninjas\",\r\n  \"comentario\": \"Esta serie es muy abuirrida\",\r\n  \"calificacion\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af7dd28609d25f527adce2"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "402"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"192-RmYh4sXHfYUdaTXpD0lOQP+SLpU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 21:56:32 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"_id\": \"68af7dd28609d25f527adce2\",\n        \"contenidoId\": \"68af7c3d6570cc483af9dcb6\",\n        \"titulo\": \"La peor Serie De Ninjas\",\n        \"comentario\": \"Esta serie es muy abuirrida\",\n        \"calificacion\": 2,\n        \"usuarioId\": \"68af7beb6570cc483af9dcb5\",\n        \"createdAt\": \"2025-08-27T21:51:14.253Z\",\n        \"updatedAt\": \"2025-08-27T21:56:32.199Z\",\n        \"likesUsuarios\": [],\n        \"dislikesUsuarios\": []\n    },\n    \"meta\": {\n        \"message\": \"Reseña actualizada correctamente\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Filtrar por titulo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY4OWJkYzRjMDZhZGE2Y2NkOTZhMiIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzNDU1MiwiZXhwIjoxNzU2MzM4MTUyfQ.s2h8LgvRq7lm9AY_TcOaG28dyWnKQsINoQQVHiexfB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias/titulo/:titulo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias",
+								"titulo",
+								":titulo"
+							],
+							"variable": [
+								{
+									"key": "titulo",
+									"value": "Ninjas"
+								}
+							]
+						},
+						"description": "Permite obetner la informacion de la coleccion de reseñas filtrando por medio de su atributo de Titulo enviado por el Path, esta requiere el inicio de sesion de un suaurio a la plataforma para su correcto uso."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/titulo/:titulo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										"titulo",
+										":titulo"
+									],
+									"variable": [
+										{
+											"key": "titulo",
+											"value": "Ninjas"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "478"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1de-4+LIFVXbGh7EfZ7bgW1xj7+HNls\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 23:39:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68af8a25c4c06ada6ccd96a4\",\n            \"contenidoId\": \"68af89f9c4c06ada6ccd96a3\",\n            \"titulo\": \"La Mejor Serie De Ninjas\",\n            \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\n            \"calificacion\": 10,\n            \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\",\n            \"createdAt\": \"2025-08-27T22:43:49.580Z\",\n            \"updatedAt\": \"2025-08-27T23:26:38.071Z\",\n            \"likesUsuarios\": [\n                \"68af89bdc4c06ada6ccd96a2\"\n            ],\n            \"dislikesUsuarios\": []\n        }\n    ],\n    \"meta\": {\n        \"message\": \"Reseñas encontradas para: Ninjas\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Like  || disLike",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWY4OWJkYzRjMDZhZGE2Y2NkOTZhMiIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMzNDU1MiwiZXhwIjoxNzU2MzM4MTUyfQ.s2h8LgvRq7lm9AY_TcOaG28dyWnKQsINoQQVHiexfB0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo\": \"like\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/resenias/:id/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"resenias",
+								":id",
+								"votar"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af8a25c4c06ada6ccd96a4"
+								}
+							]
+						},
+						"description": "Premite la opcion de dar like o dislike a una reseña en particular enviando su ID por el path, no permite dar like o dislike a una reseña creada por el mismo usuario que la creo por lo cual equiere el inicio de sesion de un susuario en la plataforma, esta condiciona a solo poder dar like o dislke no las dos opciones, ni se puede dar mas de una opcion para una reseña, se requiere el bodi con el tipo de opcion que se dara asi como el ID de la reseña con la cual se esta interactuando por medio del path."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"tipo\": \"like\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/resenias/:id/votar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"resenias",
+										":id",
+										"votar"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af8a25c4c06ada6ccd96a4"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "470"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1d6-xYVmdRqA2gwRpZC9pwR1Xucqero\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 23:26:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"_id\": \"68af8a25c4c06ada6ccd96a4\",\n        \"contenidoId\": \"68af89f9c4c06ada6ccd96a3\",\n        \"titulo\": \"La Mejor Serie De Ninjas\",\n        \"comentario\": \"Para imi es la mejor serie de aniie de tenatica de ninja s de la historia\",\n        \"calificacion\": 10,\n        \"usuarioId\": \"68af89bdc4c06ada6ccd96a2\",\n        \"createdAt\": \"2025-08-27T22:43:49.580Z\",\n        \"updatedAt\": \"2025-08-27T23:26:38.071Z\",\n        \"likesUsuarios\": [\n            null,\n            \"68af89bdc4c06ada6ccd96a2\"\n        ],\n        \"dislikesUsuarios\": []\n    },\n    \"meta\": {\n        \"message\": \"Voto registrado (like)\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Esta coleccion correponde a las reseñas creadas por usuarios que ya han creado cuenta e iniciado sesion en la plataforma, estan representan el punto de vista de un usuario reflejado en un titulo, una calificacion de 1 a 10 y una descripcion de su opinion de un contenido en especifico."
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Registrar usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juanperez@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios",
+								"register"
+							]
+						},
+						"description": "Permite la creacion de un usuario el cual permitirda el uso de todas als actividades de la plataforma, esta requiere los datos basicos de nombre, email (usado como nombre de usuario para inicio de sesion) y contraseña la cual ejecuta su hasheo correspondiente para el manejo de daros seguros de encriptacion de datos."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juan@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "129"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"81-vqCGC+IARyk1CIB+FsFjLu0MgEw\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:19:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": \"68af13fddc4565debe665073\",\n        \"nombre\": \"Juan Pérez\",\n        \"email\": \"juan@example.com\",\n        \"rol\": \"usuario\"\n    },\n    \"meta\": 201\n}"
+						},
+						{
+							"name": "409 Correo Duplicado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juan@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-UckOafVWrFmYAO9bdFBBT+UXfO8\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:20:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"EMAIL_DUPLICADO\",\n        \"message\": \"El correo ya está registrado\"\n    }\n}"
+						},
+						{
+							"name": "400 Contraseña < 8 CRT",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juanPerez@example.com\",\r\n  \"contrasena\": \"pass\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "148"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"94-ovEZW8TZQQbDplZZhSTjFyEWQKU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:20:56 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"errors\": [\n        {\n            \"type\": \"field\",\n            \"value\": \"pass\",\n            \"msg\": \"La contraseña debe tener mínimo 8 caracteres\",\n            \"path\": \"contrasena\",\n            \"location\": \"body\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "500 Correo Duplicado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juanPerez@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "179",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"b3-1ML2GoumjGGFkLe8iuxJf3Mbs4k\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 17:29:01 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"REGISTRO_ERROR\",\n        \"message\": \"E11000 duplicate key error collection: brisaacflix.usuarios index: email_1 dup key: { email: \\\"juanperez@example.com\\\" }\"\n    }\n}"
+						},
+						{
+							"name": "409 Correo Ya Existe",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombre\": \"Juan Pérez\",\r\n  \"email\": \"juanperez@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"register"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-UckOafVWrFmYAO9bdFBBT+UXfO8\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 17:29:45 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"EMAIL_DUPLICADO\",\n        \"message\": \"El correo ya está registrado\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener todos los usuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWYxM2ZkZGM0NTY1ZGViZTY2NTA3MyIsImVtYWlsIjoianVhbkBleGFtcGxlLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3NTYzMDUwNjQsImV4cCI6MTc1NjMwODY2NH0.B69vtIOa41x5juqE-2GoAJsZTS0pJXk9bwv8z6Wv1i0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios"
+							]
+						},
+						"description": "Permite obtener toda la informacion de todos los usuarios de la coleccion, esta requiere el inicio de sesion de un administrador para su ejecucion."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "908"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"38c-0ZHjqG1rbNiHd8QrTs1jqycK7MA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:29:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"_id\": \"68addeb170e0053efe72f213\",\n            \"nombre\": \"Isaac M. Updated\",\n            \"email\": \"isaac@example.com\",\n            \"contrasena\": \"$2b$10$g9ifnMRNmpY0jjJNRDI7o.4XLul.mr5BcWqcaQLvuO3tzNKh9zLCm\",\n            \"rol\": \"usuario\",\n            \"createdAt\": \"2025-08-26T16:20:01.055Z\"\n        },\n        {\n            \"_id\": \"68ade4ddf310136a77df427f\",\n            \"nombre\": \"Brian Suarez\",\n            \"email\": \"briansuarez@example.com\",\n            \"contrasena\": \"$2b$10$wzeAA1KU9fEgoic3/eyBZenEPlWzD.ic/9VGuC/.Dwc7PV7oW//nS\",\n            \"rol\": \"usuario\",\n            \"createdAt\": \"2025-08-26T16:46:21.606Z\"\n        },\n        {\n            \"_id\": \"68ae11592757dfb5e77e90b7\",\n            \"nombre\": \"Administrador\",\n            \"email\": \"admin@miapp.com\",\n            \"contrasena\": \"$2b$10$HmIs0umWFkEfh6hnkhObV.olx8c7I3XjMhPbVL3Fp1PO.WFklRs4m\",\n            \"rol\": \"admin\",\n            \"createdAt\": \"2025-08-26T19:56:09.843Z\"\n        },\n        {\n            \"_id\": \"68af13fddc4565debe665073\",\n            \"nombre\": \"Juan Pérez\",\n            \"email\": \"juan@example.com\",\n            \"contrasena\": \"$2b$10$tHM0wzOZMINcgMngPZZVNOAR8DaYKcE2V5ESoX5aDF015eC1J/fRC\",\n            \"rol\": \"usuario\",\n            \"createdAt\": \"2025-08-27T14:19:41.875Z\"\n        }\n    ],\n    \"meta\": 200\n}"
+						},
+						{
+							"name": "403 Usuario no Autorizado",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5a-gYwC+rRAgn25eUrGumw13Fz807I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:31:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"FORBIDDEN\",\n        \"message\": \"No tienes permisos para esta acción\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener Usuario por ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWRkZWIxNzBlMDA1M2VmZTcyZjIxMyIsImVtYWlsIjoiaXNhYWNAZXhhbXBsZS5jb20iLCJyb2wiOiJ1c3VhcmlvIiwiaWF0IjoxNzU2MzE1MjQwLCJleHAiOjE3NTYzMTg4NDB9.kqh538wukHm-rXW62GXTmjPWVt56NXjrtZYUtSrgkow",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68addeb170e0053efe72f213"
+								}
+							]
+						},
+						"description": "Permite obtener la informacion de un susuario especifico por medio de su ID enviado por el Path, esta requiere el inicio de sesion de un administrador de la plataforma o el mismo usuario propietario de esos datos en la plataforma."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af2ef299a791508458502f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "278",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"116-U3BkAKr4Fj6FCRniP8A+eJ2GZZo\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 16:17:32 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"_id\": \"68af2ef299a791508458502f\",\n        \"nombre\": \"Juan Pérez\",\n        \"email\": \"juanperez@example.com\",\n        \"contrasena\": \"$2b$10$HBiOOJg9SvoJoCkFYYnfjOxoAZTajbE22ssnkOQeBng3E5JwIWWOi\",\n        \"rol\": \"usuario\",\n        \"createdAt\": \"2025-08-27T16:14:42.987Z\",\n        \"updatedAt\": \"2025-08-27T16:14:42.987Z\"\n    }\n}"
+						},
+						{
+							"name": "403 No Autorizado",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68ade4ddf310136a77df427f"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "93",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5d-1vm9D54bOZGPW9saONDHGaB3TmA\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 16:21:18 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"FORBIDDEN\",\n        \"message\": \"No tienes permiso para ver este usuario\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Actualizar Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWYzM2Q1OTlhNzkxNTA4NDU4NTAzMSIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMxMzQzNCwiZXhwIjoxNzU2MzE3MDM0fQ.h0Zuy-3l8hQQ0C3Ib_meRDY6uCzdNlaS4D4cPndcy1Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nombre\": \"Juan Actualizado1\",\n  \"contrasena\": \"nuevaPassword456\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af33d599a7915084585031"
+								}
+							]
+						},
+						"description": "Permite la actualizacion de datos de un usuario en especifico por medio de su Id en el path y el inicio de sesion de un suaurio y que este coincida su Id con el que se trata de modificar para su correcta ejecucion."
+					},
+					"response": [
+						{
+							"name": "403 No Tiene Permiso",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Actualizado\",\n  \"contrasena\": \"nuevaPassword123\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af33d599a7915084585031",
+											"type": "text"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "99",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"63-AjbR4cLwsqXfhZUY08MShwoOvq4\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 16:39:26 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"FORBIDDEN\",\n        \"message\": \"No tienes permiso para modificar este usuario\"\n    }\n}"
+						},
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nombre\": \"Juan Actualizado\",\n  \"contrasena\": \"nuevaPassword123\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af33d599a7915084585031"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "130",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"82-A7X5eS0W/Ytx6gfe93x0DVxAVo8\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 16:45:17 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": \"68af33d599a7915084585031\",\n        \"nombre\": \"Juan Actualizado\",\n        \"updatedAt\": \"2025-08-27T16:45:17.397Z\"\n    },\n    \"meta\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar Usuario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWYzYTc0ZmM2YzdjYzE3Mzk1NTFhMCIsImVtYWlsIjoianVhbnBlcmV6QGV4YW1wbGUuY29tIiwicm9sIjoidXN1YXJpbyIsImlhdCI6MTc1NjMxNDIzNSwiZXhwIjoxNzU2MzE3ODM1fQ.Zwh1e1xNE4CSizm3Qub5QweTbdr2oniEj9jxdoMIIYM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "68af3a74fc6c7cc1739551a0"
+								}
+							]
+						},
+						"description": "Permite la aliminacion por completo de un usuario de la coleccion, estee s especifico por lo cual se requiere un ID enviado por el path y el inicio de sesion de un administrador de la plataforma o se el usuario que corresponda el ID con el cual se intenta eliminar para su correcta ejecucion."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af39cafc6c7cc17395519f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "104",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"68-3IGHS8IZOArz8znCGlQuMulXE7M\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 17:02:59 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": \"68af39cafc6c7cc17395519f\",\n        \"message\": \"Usuario eliminado con éxito\"\n    },\n    \"meta\": 200\n}"
+						},
+						{
+							"name": "No Autorizado",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68af3a74fc6c7cc1739551a0"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "JSON",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express",
+									"type": "text"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8",
+									"type": "text"
+								},
+								{
+									"key": "Content-Length",
+									"value": "90",
+									"type": "text"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5a-gYwC+rRAgn25eUrGumw13Fz807I\"",
+									"type": "text"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 17:04:16 GMT",
+									"type": "text"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive",
+									"type": "text"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"FORBIDDEN\",\n        \"message\": \"No tienes permisos para esta acción\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Iniciar Session usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"juanperez@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4000/api/v1/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"api",
+								"v1",
+								"usuarios",
+								"login"
+							]
+						},
+						"description": "Permite el inicio de sesion de un usuario un administrador de la plataforma, requiere sus datos por medio del Body, y este genera un token el cual le permitira el acceso a las funcionalidades y endpoints correctamente y asi su navegacion por la plataforma sea correcta."
+					},
+					"response": [
+						{
+							"name": "200 OK",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"juan@example.com\",\r\n  \"contrasena\": \"password123\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "418"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1a2-VsrkLNfF1dJWqW5HZQsb4hFWU3I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:21:50 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"message\": \"Inicio de sesión exitoso\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YWYxM2ZkZGM0NTY1ZGViZTY2NTA3MyIsImVtYWlsIjoianVhbkBleGFtcGxlLmNvbSIsInJvbCI6InVzdWFyaW8iLCJpYXQiOjE3NTYzMDQ1MTAsImV4cCI6MTc1NjMwODExMH0.ypDdF3IL_mkQntk8zQa1_gXT6iB-cVK_2Hvc6bmdXbg\",\n        \"usuario\": {\n            \"id\": \"68af13fddc4565debe665073\",\n            \"nombre\": \"Juan Pérez\",\n            \"email\": \"juan@example.com\",\n            \"rol\": \"usuario\"\n        }\n    },\n    \"meta\": 200\n}"
+						},
+						{
+							"name": "401 Credenciales Invalidas",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"juan@example.com\",\r\n  \"contrasena\": \"password\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4000/api/v1/usuarios/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4000",
+									"path": [
+										"api",
+										"v1",
+										"usuarios",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "87"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"57-ABwgryBlci+Ug6twlTwPuC2L/b4\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 27 Aug 2025 14:22:15 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"error\": {\n        \"code\": \"INVALID_CREDENTIALS\",\n        \"message\": \"Credenciales inválidas\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Esta representa la coleccion de los usuario ya sean clientes o administradores de la plataforma, esta contiene sus datos basicos asi como su contraseña, todo manejado por medio de las seguridades corresponidnetes para su manejo de datos correcto."
+		}
+	]
+}

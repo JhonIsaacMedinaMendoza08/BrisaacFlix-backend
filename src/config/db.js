@@ -15,7 +15,12 @@ export async function connectDB(uri, DB_NAME) {
     });
     await client.connect();
     db = client.db(DB_NAME);
-
+    
+    // Creacion de indice unico para el campo de correo
+    await Promise.all([
+        db.collection('usuarios').createIndex({ email: 1 }, { unique: true }),
+    ]);
+    
     console.log("✅ MongoDB Driver conectado");
     return db;
 }

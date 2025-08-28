@@ -1,0 +1,548 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "BrisaacFlix",
+    "description": "StartFragmentBrisaacFlix es una aplicación **full-stack** que permite a los usuarios registrar, calificar y rankear películas, animes y series relacionadas con la cultura geek.  El proyecto está dividido en dos partes:  \n\n  \n\\- **Backend** → API desarrollada con **Node.js + Express**.  \n\n\\- **Frontend** → Interfaz web en **HTML + CSS + JS puro** que consume la API.  EndFragment",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Contenido",
+      "description": "Comprende la coleccion de Peliculas o Series que los usuarios solicitan agreagr a la plataforma para poder hacer reseñas sobre ellas, estas seran aprobadas o rechazadas por un Administrador."
+    },
+    {
+      "name": "Reseñas",
+      "description": "Esta coleccion correponde a las reseñas creadas por usuarios que ya han creado cuenta e iniciado sesion en la plataforma, estan representan el punto de vista de un usuario reflejado en un titulo, una calificacion de 1 a 10 y una descripcion de su opinion de un contenido en especifico."
+    },
+    {
+      "name": "Usuarios",
+      "description": "Esta representa la coleccion de los usuario ya sean clientes o administradores de la plataforma, esta contiene sus datos basicos asi como su contraseña, todo manejado por medio de las seguridades corresponidnetes para su manejo de datos correcto."
+    }
+  ],
+  "paths": {
+    "/api/v1/contenido": {
+      "post": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Crear Contenido",
+        "description": "Permite la creacion de nuevo contenido solicitado por un usuario que nicio sesion, se genera con estado \"pendiente\" por defecto para sar luego aprobado por un Administrador.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "tmdbId": 31910,
+                  "titulo": "Naruto Shippūden",
+                  "sinopsis": "Naruto Uzumaki regresa a Konoha tras dos años de entrenamiento...",
+                  "anio": "2007",
+                  "poster": "https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg",
+                  "generos": [
+                    {
+                      "id": 16,
+                      "name": "Animación"
+                    },
+                    {
+                      "id": 10759,
+                      "name": "Acción y Aventura"
+                    }
+                  ],
+                  "estado": "pendiente",
+                  "usuarioId": "68af89bdc4c06ada6ccd96a2"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Obtener Todos Los Contenidos Aprobados",
+        "description": "Permite obtener los datos de todos los contenidos con estado \"Aprobado\" es un endpoint publico para mostrar informacion general a usuarios.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/:id": {
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Obtener Contenido por ID",
+        "description": "Permite obtener toda la informacion de un contenido especifico enviando el ID por Path, es un endpoint publico para el manejo de mostrar informacion a usuarios.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Eliminar un contenido",
+        "description": "Permite eliminar un contenido especifico inidcando su ID en el path, requiere el inicio de sesion de un Admin o el mismo usuario que solicito este contenido para poder ejecutarse.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/:id/listado": {
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Obtener todo el contenido del Usaurio",
+        "description": "Permite ver todo el contenido solicitado por un usuario en especifico, este requiere inicio de session y el ID del usuario para poder traer todo su contenido.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/:id/estado": {
+      "patch": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Actualizar Estado (Admin)",
+        "description": "Permite actualizar informacion de estado de un contenido por defecto al crearlo es \"pendiente\" solo un administrador inicido sesion puedoe pasar a estado \"aceptada\" o \"rechazada\" segun su criterio.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "estado": "aprobada"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/categoria/:categoria": {
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Filtrar Por Categoria",
+        "description": "Permite obtener toda la informacion de los contenidos actuales filtrador por categoria, requiere el inicio de sesion de un usuario para el filtrado.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/titulo/:titulo": {
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Filtrar por titulo",
+        "description": "Permite obtener toda la informacion de los contenidos actuales filtrador por titulo, es un endpoint pulico para el manejo de muesra de informacion a usuarios en general que visitan la pagina.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contenido/populares": {
+      "get": {
+        "tags": [
+          "Contenido"
+        ],
+        "summary": "Contenido Por Popularidad",
+        "description": "Permite obtener toda la informacion de los contenidos filtrados y ajutados por popularidad envindo en Query params la cantidad de paginas y el limite de datos que se quierebn obtener, en un Endpoint publico para el manejo de muestra de informacion a usuarios en general.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resenias": {
+      "post": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Crear Reseña",
+        "description": "Permite la creacion de una reseña, esta requiere un contenido minimo en el body y el inicio de sesion de un suaurio en la plataforma para su uso, ya que este debe ser enviado en el body para referenciar a quien pertenece la reseña.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "contenidoId": "68af89f9c4c06ada6ccd96a3",
+                  "titulo": "La Mejor Serie De Ninjas",
+                  "comentario": "Para imi es la mejor serie de aniie de tenatica de ninja s de la historia",
+                  "calificacion": 10,
+                  "usuarioId": "68af89bdc4c06ada6ccd96a2"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Obtener todas las Reseñas",
+        "description": "Permite obtener la informacion de todas las reseñas actuales en la coleccion, este es un end point publico para el uso de muestreo de uinformacion a usuarios generales de la plataforma.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/resenias/:id": {
+      "get": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Obtener Reseña por ID",
+        "description": "Permite obtener toda la informacion de una reseña en especitico enviando si ID por el path, este es un endpoint publico para el uso de muestreo de informacion a usuarios en general de la plataforma.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resenias/usuario/:id": {
+      "get": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Obtener todas las Reseñas de Usuario por Id",
+        "description": "Permite opbtener toda la informacion de todas las reseñas creadas por un usuario por lo cual requiere el envio del ID por medio del path para su filtrado y el inicio de sesion de algun usuario en la plataforma.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resenias/:id": {
+      "delete": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Eliminar Reseña por ID",
+        "description": "Permite eliminar una reseña por completo de la coleccion esta solo puede ser ejecutada por un administrador o por el mismo usuario que creo la reseña, por lo cual se requiere el inicio de sesion de alguno de los 2 y el Id por medio del path para su correcta eliminacion.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Actualizar Reseña",
+        "description": "Permite actualizar o modificar datos de una reseña esta solo puede ser ejecutada por el mismo usuario el cual creo la reseña por lo cual se requiere el inicio de sesion del mismo asi como el ID de la reseña que se desea eliminar por medio del path para su correcta ejecucion.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "titulo": "La peor Serie De Ninjas",
+                  "comentario": "Esta serie es muy abuirrida",
+                  "calificacion": 2
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resenias/titulo/:titulo": {
+      "get": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Filtrar por titulo",
+        "description": "Permite obetner la informacion de la coleccion de reseñas filtrando por medio de su atributo de Titulo enviado por el Path, esta requiere el inicio de sesion de un suaurio a la plataforma para su correcto uso.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/resenias/:id/votar": {
+      "post": {
+        "tags": [
+          "Reseñas"
+        ],
+        "summary": "Like  || disLike",
+        "description": "Premite la opcion de dar like o dislike a una reseña en particular enviando su ID por el path, no permite dar like o dislike a una reseña creada por el mismo usuario que la creo por lo cual equiere el inicio de sesion de un susuario en la plataforma, esta condiciona a solo poder dar like o dislke no las dos opciones, ni se puede dar mas de una opcion para una reseña, se requiere el bodi con el tipo de opcion que se dara asi como el ID de la reseña con la cual se esta interactuando por medio del path.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "tipo": "like"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usuarios/register": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Registrar usuario",
+        "description": "Permite la creacion de un usuario el cual permitirda el uso de todas als actividades de la plataforma, esta requiere los datos basicos de nombre, email (usado como nombre de usuario para inicio de sesion) y contraseña la cual ejecuta su hasheo correspondiente para el manejo de daros seguros de encriptacion de datos.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "nombre": "Juan Pérez",
+                  "email": "juanperez@example.com",
+                  "contrasena": "password123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usuarios": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Obtener todos los usuarios",
+        "description": "Permite obtener toda la informacion de todos los usuarios de la coleccion, esta requiere el inicio de sesion de un administrador para su ejecucion.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usuarios/:id": {
+      "get": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Obtener Usuario por ID",
+        "description": "Permite obtener la informacion de un susuario especifico por medio de su ID enviado por el Path, esta requiere el inicio de sesion de un administrador de la plataforma o el mismo usuario propietario de esos datos en la plataforma.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Actualizar Usuario",
+        "description": "Permite la actualizacion de datos de un usuario en especifico por medio de su Id en el path y el inicio de sesion de un suaurio y que este coincida su Id con el que se trata de modificar para su correcta ejecucion.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "nombre": "Juan Actualizado1",
+                  "contrasena": "nuevaPassword456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Eliminar Usuario",
+        "description": "Permite la aliminacion por completo de un usuario de la coleccion, estee s especifico por lo cual se requiere un ID enviado por el path y el inicio de sesion de un administrador de la plataforma o se el usuario que corresponda el ID con el cual se intenta eliminar para su correcta ejecucion.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/usuarios/login": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "summary": "Iniciar Session usuario",
+        "description": "Permite el inicio de sesion de un usuario un administrador de la plataforma, requiere sus datos por medio del Body, y este genera un token el cual le permitira el acceso a las funcionalidades y endpoints correctamente y asi su navegacion por la plataforma sea correcta.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "juanperez@example.com",
+                  "contrasena": "password123"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}

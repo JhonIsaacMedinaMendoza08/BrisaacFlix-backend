@@ -1,7 +1,8 @@
 // Zona de importacion de modulos
 import express from "express";
-//import swaggerUi from "swagger-ui-express";
-//import fs from "fs";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+import cors from "cors";
 //import path from "path";
 import { fileURLToPath } from "url";
 import contenidoRoutes from "./routes/contenido.routes.js";
@@ -22,6 +23,18 @@ import versionRouter from "./routes/version.routes.js";
 
 const app = express();
 
+app.use(cors({
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// Leer tu JSON generado
+const swaggerDocument = JSON.parse(fs.readFileSync("./swagger/swagger.json", "utf-8"));
+
+// Montar swagger en la ruta /api-docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Middlewares globales
 app.use(express.json());
 app.use(passport.initialize());
@@ -35,10 +48,10 @@ app.get("/api/health", (req, res) => {
 });
 
 // Rutas de Contenido
-app.use("/api/contenido", contenidoRoutes);
+app.use("/api/v1/contenido", contenidoRoutes);
 
 // Rutas de Reseñas
-app.use("/api/resenias", reseniasRoutes);
+app.use("/api/v1/resenias", reseniasRoutes);
 
 // Rutas principales
 app.use("/api/v1/usuarios", userRoutes);
