@@ -23,17 +23,20 @@ import {
     actualizarEstadoContenido,
     eliminarContenido,
     getContenidosByCategoria,
-    searchContenidosByTitulo
+    searchContenidosByTitulo,
+    listarPorPopularidad
 } from "../controllers/contenido.controller.js";
 
 // Inicializacion de rutas de express
 const routes = Router();
 
 // Rutas Publicas
-routes.get("/", listarPublicoRules, validate, listarPublico); // Para obtener Todo el contenido
-routes.get("/:id", getContenidoByIdRules, validate, getContenidoById); // Para obtener un Contenido por ID
-routes.get("/categoria/:categoria", getContenidosByCategoria); // Para filtrar por categoria
-routes.get("/titulo/:titulo", searchContenidosByTitulo); // Para filtrar por titulo
+routes.get("/populares", listarPorPopularidad); // Listar contenido por popularidad
+routes.get("/categoria/:categoria", getContenidosByCategoria); // Filtrar por categoria
+routes.get("/titulo/:titulo", searchContenidosByTitulo); // Filtrar por titulo
+routes.get("/", listarPublicoRules, validate, listarPublico); // Obtener todo el contenido
+routes.get("/:id", getContenidoByIdRules, validate, getContenidoById); // Obtener por ID
+
 
 // Rutas Rutas protegidas (requieren login)
 routes.use(passport.authenticate("jwt", { session: false }), authMiddleware);

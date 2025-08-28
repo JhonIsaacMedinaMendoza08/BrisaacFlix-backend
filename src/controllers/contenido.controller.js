@@ -7,7 +7,7 @@ import { createdResponse, successResponse, errorResponse } from "../utils/respon
 
 
 // Acceso a colecciones para contenidos
-function colContenido() { return getCollection("contenido"); }
+function colContenido() { return getCollection("contenidos"); }
 
 // Funcion para paginacion correcta de datos
 function parsePagination(req, defaultLimit = 10) {
@@ -365,3 +365,76 @@ export async function searchContenidosByTitulo(req, res, next) {
     return next(err);
   }
 }
+
+// Listado por popularidad -> GET /api/contenidos/populares
+export async function listarPorPopularidad(req, res, next) {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const count = await colContenido().countDocuments({});
+    console.log("Total contenidos en DB:", count);
+
+    const data = await colContenido().aggregate([
+      // 1. Filtrar solo aprobados
+      {
+        $match: { estado: "aprobado" }
+      },
+      // 2. Traer reseñas relacionadas
+      {
+        $lookup: {
+          from: "resenias",
+          localField: "_id",
+          foreignField: "contenidoId",
+          as: "resenias"
+        }
+      },
+      // 3. Calcular promedio y cantidad de reseñas
+      {
+        $addFields: {
+          ratingAvg: { $avg: "$resenias.calificacion" },
+          ratingCount: { $size: "$resenias" }
+        }
+      },
+      // 4. Calcular popularidad
+      {
+      $addFields: {
+        popularidad: {
+          $cond: [
+            { $gt: ["$ratingCount", 0] },
+            "$ratingAvg",
+            0
+          ]
+        }
+      }
+      },
+      // 5. Ordenar por popularidad descendente
+      { $sort: { popularidad: -1 } },
+      // 6. Paginación
+      { $skip: skip },
+      { $limit: parseInt(limit) },
+      // 7. Proyección limpia
+      {
+        $project: {
+          titulo: 1,
+          poster: 1,
+          anio: 1,
+          generos: 1,
+          estado: 1,
+          ratingAvg: { $ifNull: ["$ratingAvg", 0] },
+          ratingCount: 1,
+          popularidad: 1
+        }
+      }
+    ]).toArray();
+
+    res.json({ ok: true, data });
+  } catch (error) {
+    console.error("❌ Error en listarPopulares:", error);
+    res.status(500).json({
+      ok: false,
+      error: { code: "SERVER_ERROR", message: error.message }
+    });
+  }
+};
+
