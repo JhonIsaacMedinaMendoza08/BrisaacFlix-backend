@@ -35,8 +35,7 @@ Los **administradores** cuentan con privilegios adicionales como la gestión de 
 - **postman-to-openapi** (dev) → generación automática de OpenAPI desde colección Postman
 
 ### Frontend
-- **HTML + CSS + JS puro** (sin frameworks)
-- **Fetch API** para consumo del backend
+- **React**
 
 ---
 
@@ -103,18 +102,6 @@ La API está disponible en **Swagger UI** en:
 http://localhost:4000/api-docs
 ```
 
-### Generar la especificación OpenAPI desde Postman
-Se incluye un script que convierte tu colección Postman exportada a `swagger/swagger.json`.
-
-1. Exporta tu colección Postman a `src/docs/BrisaacFlix.postman_collection.json` (formato Collection v2.1 recomendado).
-2. Ejecuta (local):
-```bash
-npm run gen:swagger
-```
-Esto generará `swagger/swagger.json` (JSON válido) que se monta en `/api-docs`.
-
----
-
 ## ⚡ Instalación y uso (local)
 
 ### Requisitos
@@ -134,9 +121,6 @@ npm install
 cp .env.example .env
 # Editar .env con tus credenciales (MONGODB_URI, JWT_SECRET, etc.)
 
-# (Opcional) Generar Swagger desde Postman
-npm run gen:swagger
-
 # Iniciar servidor en modo desarrollo
 npm run dev
 ```
@@ -147,10 +131,10 @@ Servidor por defecto: `http://localhost:4000`
 
 ## 🗄️ Variables de entorno (.env)
 
-Ejemplo mínimo (NO subas valores reales al repo):
+Ejemplo mínimo:
 ```env
 PORT=4000
-MONGODB_URI=mongodb+srv://<usuario>:<password>@<cluster>.mongodb.net/?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://reservation_admin:admin1234@mycluster.vlbhwms.mongodb.net/?retryWrites=true&w=majority
 DB_NAME=brisaacflix
 NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000
@@ -192,26 +176,20 @@ API_VERSION=1.0.0
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "gen:swagger": "node scripts/genSwagger.js",
     "seed": "node scripts/dataset.js"
   }
 }
 ```
+---
 
-- `npm run gen:swagger` → Genera `swagger/swagger.json` desde la colección Postman.
-- `npm run seed` → Poblado de datos de prueba (si incluyes `scripts/dataset.js`).
+## 🔗 Frontend
+**Repositorio frontend :** _[[link repo](https://github.com/JhonIsaacMedinaMendoza08/brisaacflix-frontend.git)]_  
+**Deploy de frontend:** _[[link ](https://gestor-de-reservas-de-canchas-front.vercel.app/)]_ 
 
 ---
 
-## 📌 Notas técnicas y recomendaciones
-
-- **Transacciones**: Para operaciones críticas (crear reseñas + actualizar contadores) se recomienda usar transacciones de MongoDB cuando sea soportado por tu clúster.
-- **Índices**: Añade índices en campos de búsqueda: `tmdbId` (único), `titulo` (texto), `generos.id`, `usuarioId`, `contenidoId` (en reseñas).
-- **Seguridad**:
-  - Nunca publiques el `.env` ni credenciales en el repo.
-  - Asegura `JWT_SECRET` y usa HTTPS en producción.
-  - Habilita CORS sólo para el front-end en producción.
-- **Documentación**: Mantén actualizada la colección Postman y regenera `swagger/swagger.json` antes de entregar.
+## 🔗 Video explicativo
+**Video de Youtube :** _[[[link](https://youtu.be/-rfr3Kpvxpk)]]_  
 
 ---
 
@@ -223,5 +201,5 @@ Este proyecto está bajo licencia **MIT**.
 
 ## ✨ Créditos
 
-- Equipo del proyecto: Jhon, Isaac, Brian (y colaboradores).
+- Equipo del proyecto: Isaac Medina y Brian Suarez.
 - Inspiración/recursos: The Movie Database (TMDB) para metadata de contenidos.
