@@ -14,6 +14,7 @@ import jwt from "jsonwebtoken";
 function col() {
     return getCollection("usuarios");
 }
+function colReseñas() { return getCollection("resenias"); }
 
 export const registerUser = async (req, res, next) => {
     try {
@@ -33,7 +34,7 @@ export const registerUser = async (req, res, next) => {
             nombre,
             email,
             contrasena: hashedPassword,
-            rol: "usuario"
+            rol: "user"
         });
 
         usuario.validar(); // Validación del modelo
@@ -148,31 +149,43 @@ export const updateUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-    try {
-        const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-        // Validar ID
-        if (!ObjectId.isValid(id)) {
-            return errorResponse(res, "ID inválido", 400, "INVALID_ID");
-        }
-
-        // si no es admin, solo puede actualizar su propio perfil
-        if (req.user.rol !== "admin" && req.user._id.toString() !== id.toString()) {
-            return errorResponse(res, "No tienes permiso para modificar este usuario", 403, "FORBIDDEN");
-        }
-
-        // Intentar eliminar
-        const result = await col().deleteOne({ _id: new ObjectId(id) });
-
-        if (result.deletedCount === 0) {
-            return errorResponse(res, "Usuario no encontrado", 404, "NOT_FOUND");
-        }
-
-        return successResponse(res, { id, message: "Usuario eliminado con éxito" }, 200);
-
-    } catch (error) {
-        return errorResponse(res, error.message, 500, "DELETE_USER_ERROR");
+    // Validar ID
+    if (!ObjectId.isValid(id)) {
+      return errorResponse(res, "ID inválido", 400, "INVALID_ID");
     }
+
+    // Solo admin puede eliminar a otros, un user solo a sí mismo
+    if (req.user.rol !== "admin" && req.user._id.toString() !== id.toString()) {
+      return errorResponse(res, "No tienes permiso para eliminar este usuario", 403, "FORBIDDEN");
+    }
+
+    // Intentar eliminar usuario
+    const result = await col().deleteOne({ _id: new ObjectId(id) });
+    if (result.deletedCount === 0) {
+      return errorResponse(res, "Usuario no encontrado", 404, "NOT_FOUND");
+    }
+
+    // Eliminar reseñas de este usuario
+    const { deletedCount: reseñasEliminadas } = await colReseñas().deleteMany({
+      usuarioId: new ObjectId(id),
+    });
+
+    return successResponse(
+      res,
+      {
+        id,
+        deleted: true,
+        reseñasEliminadas,
+        message: `Usuario eliminado y ${reseñasEliminadas} reseñas asociadas eliminadas`,
+      },
+      200
+    );
+  } catch (error) {
+    return errorResponse(res, error.message, 500, "DELETE_USER_ERROR");
+  }
 };
 
 export const loginUser = async (req, res) => {

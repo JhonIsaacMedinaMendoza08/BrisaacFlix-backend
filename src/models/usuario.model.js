@@ -11,7 +11,7 @@ export class Usuario {
         this.nombre = nombre?.trim();
         this.email = email?.trim().toLowerCase();
         this.contrasena = contrasena; // no se trimea ni modifica
-        this.rol = rol?.trim().toLowerCase() || 'usuario'; // por defecto usuario
+        this.rol = rol?.trim().toLowerCase() || 'user'; // por defecto user
         // Control de creacion
         this.createdAt = createdAt ? new Date(createdAt) : new Date();
         this.updatedAt = updatedAt ? new Date(updatedAt) : new Date();
@@ -50,7 +50,7 @@ export class Usuario {
             throw new Error("contrasena requerida y mínimo 8 caracteres");
         }
         // rol debe ser 'usuario' o 'admin'
-        const ROLES = new Set(['usuario', 'admin']);
+        const ROLES = new Set(['user', 'admin']);
         if (!ROLES.has(this.rol)) {
             throw new Error("rol inválido");
         }

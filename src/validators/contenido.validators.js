@@ -4,7 +4,7 @@ import { body, param, query } from "express-validator";
 import { ObjectId } from "mongodb";
 
 // Arrays de datos fijos para comparaciones
-const ESTADOS = ["pendiente", "aprobado", "rechazada"];
+const ESTADOS = ["pendiente", "aprobado", "rechazado"];
 const SORTS = ["newest", "oldest", "topRated", "mostReviewed"];
 
 

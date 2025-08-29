@@ -8,6 +8,7 @@ import { createdResponse, successResponse, errorResponse } from "../utils/respon
 
 // Acceso a colecciones para contenidos
 function colContenido() { return getCollection("contenidos"); }
+function colReseñas() { return getCollection("resenias"); }
 
 // Funcion para paginacion correcta de datos
 function parsePagination(req, defaultLimit = 10) {
@@ -123,7 +124,6 @@ export async function listarAdmin(req, res, next) {
     return next(err);
   }
 }
-
 
 // Devuelve solo si está aprobada; si es admin u owner, devuelve cualquiera. ->  GET /api/contenido/:id
 export async function getContenidoById(req, res, next) {
@@ -282,7 +282,7 @@ export async function actualizarEstadoContenido(req, res, next) {
       return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
     }
 
-    if (nuevoEstado !== "aprobado" && nuevoEstado !== "rechazada" && nuevoEstado !== "pendiente") {
+    if (nuevoEstado !== "aprobado" && nuevoEstado !== "rechazado" && nuevoEstado !== "pendiente") {
       return errorResponse(res, "Estado inválido", 400, "INVALID_STATE");
     }
 
@@ -303,11 +303,22 @@ export async function eliminarContenido(req, res, next) {
   try {
     const _id = new ObjectId(req.params.id);
 
+    // Primero intentamos eliminar el contenido
     const { deletedCount } = await colContenido().deleteOne({ _id });
     if (deletedCount === 0) {
       return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
     }
-    return successResponse(res, { deleted: true });
+
+    // Luego, eliminar todas las reseñas asociadas a ese contenido
+    const { deletedCount: reseñasEliminadas } = await colReseñas().deleteMany({
+      contenidoId: _id,
+    });
+
+    return successResponse(res, {
+      deleted: true,
+      reseñasEliminadas,
+      message: `Contenido y ${reseñasEliminadas} reseñas eliminadas correctamente`,
+    });
   } catch (err) {
     return next(err);
   }

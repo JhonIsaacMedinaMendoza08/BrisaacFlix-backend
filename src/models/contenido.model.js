@@ -2,7 +2,7 @@
 import { ObjectId } from "mongodb"; // Modulo para crar ID de mongoDB
 
 // Array de estados para validacion al crear
-const ESTADOS = new Set(['pendiente', 'rechazada', 'aprobado']); // creamos coleccion de valores unicos para validacion de atributo estado
+const ESTADOS = new Set(['pendiente', 'rechazado', 'aprobado']); // creamos coleccion de valores unicos para validacion de atributo estado
 // Array de tipos
 const TIPOS = new Set(['pelicula', 'serie']); 
 
