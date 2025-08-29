@@ -44,14 +44,14 @@ routes.get("/:id", getContenidoByIdRules, validate, getContenidoById); // Obtene
 // Rutas Rutas protegidas (requieren login)
 routes.use(passport.authenticate("jwt", { session: false }), authMiddleware);
 
+routes.get("/:id/listado", listarMisContenidosRules, validate, listarMisContenidos); // GET Para obetern el contenido creado por el usuario
 routes.patch("/:id", editarContenidoRules, validate, editarContenido); // PATCH para editar el contenido propio
 // Usuario autenticado
-routes.get("/:id/listado", listarMisContenidosRules, validate, listarMisContenidos); // GET Para obetern el contenido creado por el usuario
 routes.post("/", crearContenidoRules, validate, crearContenido); // Post para crear Contenido 
 
 // Admin
-routes.get("/admin/listado", authorizeRoles("admin"), listarAdminRules, validate, listarAdmin); // GET todo el contenido
 routes.patch("/:id/estado", authorizeRoles("admin"), actualizarEstadoContenidoRules, validate, actualizarEstadoContenido); // Para Actualizar estado de un Contenido
+routes.get("/:id/admin/listado", authorizeRoles("admin"), listarAdminRules, validate, listarAdmin); // GET todo el contenido
 routes.delete("/:id", authorizeRoles("admin"), eliminarContenidoRules, validate, eliminarContenido); // Para Borrar Contenido
 
 

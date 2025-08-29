@@ -20,7 +20,6 @@ function parsePagination(req, defaultLimit = 10) {
 // Solo contenido aprobado, con filtros y promedio de reseñas ->  GET /api/contenido
 export async function listarPublico(req, res, next) {
   try {
-    const { page, limit, skip } = parsePagination(req);
     const { q, generoId, anio, sort = "newest" } = req.query;
 
     const match = { estado: "aprobado" };
@@ -69,19 +68,12 @@ export async function listarPublico(req, res, next) {
     })();
 
     pipeline.push({ $sort: sortStage });
-    pipeline.push({ $skip: skip }, { $limit: limit });
 
-    const [items, total] = await Promise.all([
-      colContenido().aggregate(pipeline).toArray(),
-      colContenido().countDocuments(match),
-    ]);
+    // 🔹 IMPORTANTE: NO agregamos skip ni limit aquí
 
-    return successResponse(res, items, {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    });
+    const items = await colContenido().aggregate(pipeline).toArray();
+
+    return successResponse(res, items);
   } catch (err) {
     return next(err);
   }
@@ -90,7 +82,7 @@ export async function listarPublico(req, res, next) {
 // Lista con filtros, cualquier estado (público)  ->  GET /api/contenido/admin
 export async function listarAdmin(req, res, next) {
   try {
-    const { page, limit, skip } = parsePagination(req);
+    // ❌ no usamos paginación
     const { estado, q, anio } = req.query;
 
     const match = {};
@@ -122,25 +114,16 @@ export async function listarAdmin(req, res, next) {
       },
       { $project: { resenias: 0 } },
       { $sort: { createdAt: -1 } },
-      { $skip: skip },
-      { $limit: limit },
     ];
 
-    const [items, total] = await Promise.all([
-      colContenido().aggregate(pipeline).toArray(),
-      colContenido().countDocuments(match),
-    ]);
+    const items = await colContenido().aggregate(pipeline).toArray();
 
-    return successResponse(res, items, {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    });
+    return successResponse(res, items, { total: items.length });
   } catch (err) {
     return next(err);
   }
 }
+
 
 // Devuelve solo si está aprobada; si es admin u owner, devuelve cualquiera. ->  GET /api/contenido/:id
 export async function getContenidoById(req, res, next) {
