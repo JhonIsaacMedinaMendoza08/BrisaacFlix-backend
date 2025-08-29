@@ -80,6 +80,36 @@ export async function listarPublico(req, res, next) {
   }
 }
 
+// Obtener todos los generos disponibles en DB de contenidos -> GET /api/contenido/generos
+export async function listarGeneros(req, res, next) {
+  try {
+    const pipeline = [
+      { $match: { estado: "aprobado" } }, // solo aprobados
+      { $unwind: "$generos" }, // desarma el array generos
+      {
+        $group: {
+          _id: "$generos.id",
+          name: { $first: "$generos.name" },
+        },
+      },
+      { $sort: { name: 1 } }, // opcional, orden alfabético
+      {
+        $project: {
+          _id: 0,
+          id: "$_id",
+          name: 1,
+        },
+      },
+    ];
+
+    const generos = await colContenido().aggregate(pipeline).toArray();
+
+    return successResponse(res, generos);
+  } catch (err) {
+    return next(err);
+  }
+}
+
 // Lista con filtros, cualquier estado (público)  ->  GET /api/contenido/admin
 export async function listarAdmin(req, res, next) {
   try {

@@ -2,6 +2,7 @@
 import { Router } from "express"; // rutas de express
 import { validate } from "../middlewares/validate.js"; // Validator-express
 import { authMiddleware, authorizeRoles } from "../middlewares/auth.js";  // Passport para validacion de usuarios
+import { reseñaLimiter } from "../utils/limitadores.js"
 import passport from "passport"; // Paa autenticacion de pioidaes de uso dendpoints
 import { 
     listarReseniasRules, 
@@ -34,7 +35,7 @@ routes.get("/titulo/:titulo", searchReseniasByTitulo);// Para filtrar por titulo
 routes.use(passport.authenticate("jwt", { session: false }), authMiddleware);
 
 // Usuario autenticado
-routes.post("/",crearReseniaRules, validate, crearResenia); // POST para crear Reseña
+routes.post("/",crearReseniaRules, validate, reseñaLimiter, crearResenia); // POST para crear Reseña
 routes.get("/usuario/:id", getReseniasByIdUsuarioRules, validate, getReseniasByIdUsuario); // GET Para obtener las Reseñas creadas por el usuario
 routes.patch("/:id", updateReseniaByIdRules, validate, updateResenia); // PATCH para actualizar el contenido de una Reseña
 routes.delete( "/:id", authMiddleware, eliminarReseniaRules, validate, eliminarResenia); // Borrar reseña solo el mismo cerador o un admin.

@@ -7,7 +7,7 @@ import cors from "cors";
 import { fileURLToPath } from "url";
 import contenidoRoutes from "./routes/contenido.routes.js";
 import reseniasRoutes from "./routes/resenia.routes.js";
-
+import { globalLimiter } from "./utils/limitadores.js";
 import userRoutes from "./routes/usuario.routes.js";
 import passport  from "./config/passport.js";
 import versionRouter from "./routes/version.routes.js";
@@ -22,6 +22,9 @@ import versionRouter from "./routes/version.routes.js";
 //);
 
 const app = express();
+
+// Aplicar limitador global a toda la API
+app.use("/api", globalLimiter);
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN || "http://localhost:3000",
