@@ -2,16 +2,19 @@
 import { ObjectId } from "mongodb"; // Modulo para crar ID de mongoDB
 
 // Array de estados para validacion al crear
-const ESTADOS = new Set(['pendiente', 'rechazada', 'aprobada']); // creamos coleccion de valores unicos para validacion de atributo estado
+const ESTADOS = new Set(['pendiente', 'rechazada', 'aprobado']); // creamos coleccion de valores unicos para validacion de atributo estado
+// Array de tipos
+const TIPOS = new Set(['pelicula', 'serie']); 
 
 // Creacion de Clase Tarea
 export class Contenido{
     // Contructor definicion de atribbutos
-    constructor({ _id, tmdbId, titulo, sinopsis, anio, poster, generos = [], estado = 'pendiente', createdAt, updatedAt, usuarioId})
+    constructor({ _id, tmdbId, tipo, titulo, sinopsis, anio, poster, generos = [], estado = 'pendiente', createdAt, updatedAt, usuarioId})
     {   
         // Atributos Base
         this._id = _id ? new ObjectId(_id) : undefined;
         this.tmdbId = tmdbId; // obligatorio, referencia externa
+        this.tipo = tipo?.trim(); // tipo pelicula o serie
         this.titulo = titulo?.trim();
         this.sinopsis = sinopsis?.trim();
         this.anio = anio; // año como string YYYY
@@ -31,6 +34,7 @@ export class Contenido{
     return {
         ...(this._id && { _id: this._id }),
         tmdbId: this.tmdbId,
+        tipo: this.tipo,
         titulo: this.titulo,
         sinopsis: this.sinopsis,
         anio: this.anio,
@@ -52,6 +56,10 @@ export class Contenido{
         // tmdbId requerido y debe ser número
         if (!this.tmdbId || typeof this.tmdbId !== "number") {
         throw new Error("tmdbId requerido y debe ser numérico");
+        }
+        // tipo válido
+        if (!TIPOS.has(this.tipo)) {
+            throw new Error("tipo inválido (use: pelicula | serie)");
         }
         // titulo requerido
         if (!this.titulo || typeof this.titulo !== "string") {

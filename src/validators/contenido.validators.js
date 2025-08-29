@@ -4,7 +4,7 @@ import { body, param, query } from "express-validator";
 import { ObjectId } from "mongodb";
 
 // Arrays de datos fijos para comparaciones
-const ESTADOS = ["pendiente", "aprobada", "rechazada"];
+const ESTADOS = ["pendiente", "aprobado", "rechazada"];
 const SORTS = ["newest", "oldest", "topRated", "mostReviewed"];
 
 
@@ -82,4 +82,18 @@ export const eliminarContenidoRules = [
         .trim()
         .isMongoId()
         .withMessage("El parámetro :id debe ser un ObjectId válido"),
+];
+
+// 8. Listar por tipo
+export const listarPorTipoRules = [
+  param("tipo")
+    .trim()
+    .isIn(["pelicula", "serie"])
+    .withMessage("tipo inválido (use: pelicula | serie)"),
+  query("anio").optional().matches(/^\d{4}$/).withMessage("anio debe ser formato YYYY"),
+  query("generoId").optional().isInt({ min: 1 }).withMessage("generoId debe ser numérico"),
+  query("q").optional().isString().trim(),
+  query("sort").optional().isIn(SORTS).withMessage(`sort inválido (use: ${SORTS.join(" | ")})`),
+  query("page").optional().isInt({ min: 1 }).toInt(),
+  query("limit").optional().isInt({ min: 1, max: 100 }).toInt(),
 ];

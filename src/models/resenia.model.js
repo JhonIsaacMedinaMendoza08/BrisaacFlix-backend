@@ -1,6 +1,7 @@
 // Zona de importacion de modulos
 import { ObjectId } from "mongodb"; // Modulo para crar ID de mongoDB
-
+// Array de tipos
+const TIPOS = new Set(['pelicula', 'serie']); 
 // Creacion de Clase Reseña
 export class Resenia{
     // Contructor definicion de atribbutos
@@ -35,6 +36,7 @@ export class Resenia{
         titulo: this.titulo,
         comentario: this.comentario,
         calificacion: this.calificacion,
+        tipo: this.tipo,
         usuarioId: this.usuarioId,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,

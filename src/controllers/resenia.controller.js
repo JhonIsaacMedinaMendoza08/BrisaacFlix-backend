@@ -5,9 +5,7 @@ import { getCollection } from "../config/db.js";
 import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
 
 // Reutilizamos la colección "Resenias"
-function col() {
-    return getCollection("resenias");
-}
+function col() { return getCollection("resenias"); }
 
 // Listar Reseñas (público) ->  GET /api/resenias
 export async function listarResenias(req, res, next) {
@@ -70,7 +68,6 @@ export async function eliminarResenia(req, res, next) {
   try {
     const _id = new ObjectId(req.params.id);
     const reseña = await col().findOne({ _id });
-    console.log(reseña);
     if (!reseña) {
       return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
     }
@@ -91,13 +88,10 @@ export async function updateResenia(req, res, next) {
   try {
     const _id = new ObjectId(req.params.id);
     const reseña = await col().findOne({ _id });
-
     if (!reseña) {
       return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
     }
 
-    // Solo el autor de la reseña puede modificarla
-    console.log(reseña.usuarioId.toString(), req.user.id.toString())
     if (reseña.usuarioId.toString() !== req.user.id.toString()) {
       return errorResponse(res, "No autorizado para modificar esta reseña", 403, "FORBIDDEN");
     }
@@ -128,6 +122,11 @@ export async function votarResenia(req, res, next) {
 
     const reseña = await col().findOne({ _id });
     if (!reseña) return errorResponse(res, "Reseña no encontrada", 404, "NOT_FOUND");
+    
+    // Condicional para no poder dar like a reseñas creadas por el mismo usuario
+    if (reseña.usuarioId.toString() === req.user.id.toString()) {
+      return errorResponse(res, "No puedes votar en tu propia reseña", 403, "SELF_VOTE_NOT_ALLOWED");
+    }
 
     const campo = tipo === "like" ? "likesUsuarios" : "dislikesUsuarios";
     const opuesto = tipo === "like" ? "dislikesUsuarios" : "likesUsuarios";

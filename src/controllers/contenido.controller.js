@@ -23,7 +23,7 @@ export async function listarPublico(req, res, next) {
     const { page, limit, skip } = parsePagination(req);
     const { q, generoId, anio, sort = "newest" } = req.query;
 
-    const match = { estado: "aprobada" };
+    const match = { estado: "aprobado" };
     if (anio) match.anio = anio;
     if (generoId) match.generos = { $elemMatch: { id: parseInt(generoId, 10) } };
     if (q) {
@@ -178,7 +178,7 @@ export async function getContenidoById(req, res, next) {
     if (!doc) return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
 
     // si no está aprobada, solo admin u owner la pueden ver
-    if (doc.estado !== "aprobada") {
+    if (doc.estado !== "aprobado") {
       const isAdmin = req.user?.rol === "admin";
       const isOwner = req.user && String(doc.usuarioId) === String(req.user.id);
       if (!isAdmin && !isOwner) {
@@ -201,6 +201,7 @@ export async function crearContenido(req, res, next) {
     // Evitamos que el cliente fuerce usuarioId/estado
     const payload = {
       tmdbId: req.body.tmdbId,
+      tipo: req.body.tipo,
       titulo: req.body.titulo,
       sinopsis: req.body.sinopsis,
       anio: req.body.anio,
@@ -298,7 +299,7 @@ export async function actualizarEstadoContenido(req, res, next) {
       return errorResponse(res, "Contenido no encontrado", 404, "NOT_FOUND");
     }
 
-    if (nuevoEstado !== "aprobada" && nuevoEstado !== "rechazada" && nuevoEstado !== "pendiente") {
+    if (nuevoEstado !== "aprobado" && nuevoEstado !== "rechazada" && nuevoEstado !== "pendiente") {
       return errorResponse(res, "Estado inválido", 400, "INVALID_STATE");
     }
 
@@ -437,4 +438,78 @@ export async function listarPorPopularidad(req, res, next) {
     });
   }
 };
+
+// Listar por tipo (pelicula o serie) -> GET /api/contenido/tipo/:tipo
+export async function listarPorTipo(req, res, next) {
+  try {
+    const { tipo } = req.params;
+    const { page, limit, skip } = parsePagination(req);
+    const { q, generoId, anio, sort = "newest" } = req.query;
+
+    // Validar tipo
+    if (!["pelicula", "serie"].includes(tipo)) {
+      return errorResponse(res, "Tipo inválido (use: pelicula | serie)", 400, "INVALID_TYPE");
+    }
+
+    const match = { estado: "aprobado", tipo };
+    if (anio) match.anio = anio;
+    if (generoId) match.generos = { $elemMatch: { id: parseInt(generoId, 10) } };
+    if (q) {
+      match.$text = { $search: q }; // requiere índice de texto
+    }
+
+    const pipeline = [
+      { $match: match },
+      {
+        $lookup: {
+          from: "resenias",
+          localField: "_id",
+          foreignField: "contenidoId",
+          as: "resenias",
+        },
+      },
+      {
+        $addFields: {
+          ratingCount: { $size: "$resenias" },
+          ratingAvg: {
+            $cond: [
+              { $gt: [{ $size: "$resenias" }, 0] },
+              { $avg: "$resenias.calificacion" },
+              null,
+            ],
+          },
+        },
+      },
+      { $project: { resenias: 0 } },
+    ];
+
+    // Orden
+    const sortStage = (() => {
+      switch (sort) {
+        case "oldest": return { createdAt: 1 };
+        case "topRated": return { ratingAvg: -1, ratingCount: -1, createdAt: -1 };
+        case "mostReviewed": return { ratingCount: -1, createdAt: -1 };
+        case "newest":
+        default: return { createdAt: -1 };
+      }
+    })();
+
+    pipeline.push({ $sort: sortStage });
+    pipeline.push({ $skip: skip }, { $limit: limit });
+
+    const [items, total] = await Promise.all([
+      colContenido().aggregate(pipeline).toArray(),
+      colContenido().countDocuments(match),
+    ]);
+
+    return successResponse(res, items, {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
 
