@@ -7,6 +7,7 @@ import cors from "cors";
 import { fileURLToPath } from "url";
 import contenidoRoutes from "./routes/contenido.routes.js";
 import reseniasRoutes from "./routes/resenia.routes.js";
+import notificacionesRoutes from "./routes/notificacion.routes.js"
 import { globalLimiter } from "./utils/limitadores.js";
 import userRoutes from "./routes/usuario.routes.js";
 import passport  from "./config/passport.js";
@@ -56,8 +57,11 @@ app.use("/api/v1/contenido", contenidoRoutes);
 // Rutas de Reseñas
 app.use("/api/v1/resenias", reseniasRoutes);
 
-// Rutas principales
+// Rutas usuarios
 app.use("/api/v1/usuarios", userRoutes);
+
+// Rutas notificaciones
+app.use("/api/v1/notificaciones", notificacionesRoutes);
 
 // Swagger Docs
 //app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocumentJson));

@@ -1,11 +1,13 @@
 // Zona de importacion de modulos
 import { ObjectId } from "mongodb";
 import { Resenia } from "../models/resenia.model.js"; 
+import { Notificacion } from "../models/notificacion.model.js"; 
 import { getCollection } from "../config/db.js"; 
 import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
 
 // Reutilizamos la colección "Resenias"
 function col() { return getCollection("resenias"); }
+function colNotificaciones() { return getCollection("notificaciones"); }
 
 // Listar Reseñas (público) ->  GET /api/resenias
 export async function listarResenias(req, res, next) {
@@ -36,6 +38,12 @@ export async function getReseniaById(req, res, next) {
 // Crear Reseña (usuario autenticado) ->  POST /api/resenias
 export async function crearResenia(req, res, next) {
     try {
+
+        // Validaciones usuario Id logueado para carguarle la notificacion
+        const usuarioId = req.user?.id; // desde token
+        if (!usuarioId) return errorResponse(res, "No autenticado", 401, "NO_AUTH");
+
+        // Creacion de Reseña
         const resenia = new Resenia({
             contenidoId: req.body.contenidoId,
             titulo: req.body.titulo,
@@ -44,9 +52,17 @@ export async function crearResenia(req, res, next) {
             usuarioId: req.body.usuarioId // Autenticacion de usuario requerida
         });
 
+        const notificacion = new Notificacion({
+            reseniaId: req.body.reseniaId,
+            usuarioId: req.body.usuarioId, // Autenticacion de usuario requerida
+            mensaje: req.body.mensaje,
+        });
+
+        notificacion.validar();
+        const { insertedIdNotificacion } = await colNotificaciones().insertOne(notificacion.toDocument());
         resenia.validar();
         const { insertedId } = await col().insertOne(resenia.toDocument());
-        return createdResponse(res, { id: insertedId });
+        return createdResponse(res, { id: insertedId }, { id: insertedIdNotificacion });
     } catch (err) {
         return next(err);
     }
