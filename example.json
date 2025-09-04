@@ -1,0 +1,27 @@
+
+
+//http://localhost:4000/api/v1/usuarios/login
+// Se debe de hacer con POST para el inicio de sesion 
+{
+	"email": "ana@flix.com",
+	"contrasena":"1234567890"
+}
+
+
+
+{
+	"ok": true,
+	"data": {
+		"message": "Inicio de sesión exitoso",
+		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjliYjJkMGYxN2U0NGQzODM0MmM1MyIsImVtYWlsIjoiYW5hQGZsaXguY29tIiwicm9sIjoidXNlciIsImlhdCI6MTc1NzAwMjY2NCwiZXhwIjoxNzU3MDA2MjY0fQ.ZHeI_MFyaEywyQdGTElDdRkNkw9DuOQUzMgq4mI4KX8",
+		"usuario": {
+			"id": "68b9bb2d0f17e44d38342c53",
+			"nombre": "Ana User",
+			"email": "ana@flix.com",
+			"rol": "user"
+		}
+	},
+	"meta": 200
+}
+
+http://localhost:4000/api/v1/resenias/usuariodocs/

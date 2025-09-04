@@ -9,7 +9,7 @@ const salt = bcrypt.genSaltSync(10);
 // ======================
 // CONFIGURACIÓN MONGO
 // ======================
-const uri = "mongodb+srv://reservation_admin:admin1234@mycluster.vlbhwms.mongodb.net/?retryWrites=true&w=majority"; 
+const uri = "mongodb://localhost:27017"; 
 const dbName = "brisaacflix";
 const client = new MongoClient(uri);
 

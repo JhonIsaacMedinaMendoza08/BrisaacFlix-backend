@@ -3,6 +3,9 @@ import { ObjectId } from "mongodb";
 import { Resenia } from "../models/resenia.model.js"; 
 import { getCollection } from "../config/db.js"; 
 import { createdResponse, successResponse, errorResponse } from "../utils/responses.js";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
 // Reutilizamos la colección "Resenias"
 function col() { return getCollection("resenias"); }
@@ -171,3 +174,32 @@ export async function searchReseniasByTitulo(req, res, next) {
     return next(err);
   }
 }
+
+
+
+
+// Obtener Reseñas por usuario ->  GET /api/resenias/usuariodocs/:id Para exportar con archivo con las resenias del usuario
+export async function getReseniasByIdUsuarioDocs(req, res, next) {
+  try {
+      const outputFile = path.resolve("exports/resenias.csv");
+
+      const usuarioId = new ObjectId(req.params.id);
+      const docs = await col().find({ usuarioId }).toArray();
+
+      //const reseniasUser = JSON.parse(docs)
+
+      // Creamos la carpeta si no existe
+    fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+
+    // Guardamos
+    fs.writeFileSync(outputFile, JSON.stringify(docs, null, 2));
+
+    console.log(`✅ Swagger JSON generado en: ${outputFile}`);
+  } catch (err) {
+      return next(err);
+  }
+}
+
+
+
+

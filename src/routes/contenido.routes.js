@@ -2,7 +2,7 @@
 import { Router } from "express"; // rutas de express
 import { validate } from "../middlewares/validate.js"; // Validator-express
 import { authMiddleware, authorizeRoles } from "../middlewares/auth.js";  // Paspotr para autenticacion de usuarios
-import { contenidoLimiter } from "../utils/limitadores.js"; // Limitador de interaccion
+//import { contenidoLimiter } from "../utils/limitadores.js"; // Limitador de interaccion
 import passport from "passport"; // Paa autenticacion de pioidaes de uso dendpoints
 import { 
     listarPublicoRules,
@@ -50,7 +50,7 @@ routes.use(passport.authenticate("jwt", { session: false }), authMiddleware);
 routes.get("/:id/listado", listarMisContenidosRules, validate, listarMisContenidos); // GET Para obetern el contenido creado por el usuario
 routes.patch("/:id", editarContenidoRules, validate, editarContenido); // PATCH para editar el contenido propio
 // Usuario autenticado
-routes.post("/", crearContenidoRules, validate, contenidoLimiter, crearContenido); // Post para crear Contenido 
+routes.post("/", crearContenidoRules, validate, crearContenido); // Post para crear Contenido 
 
 // Admin
 routes.patch("/:id/estado", authorizeRoles("admin"), actualizarEstadoContenidoRules, validate, actualizarEstadoContenido); // Para Actualizar estado de un Contenido

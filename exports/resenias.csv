@@ -1,0 +1,64 @@
+[
+  {
+    "_id": "68b9bb2d0f17e44d38342c88",
+    "contenidoId": "68b9bb2d0f17e44d38342c5f",
+    "titulo": "Muy nostálgica",
+    "comentario": "La ambientación ochentera es lo mejor, engancha rápido y los personajes son entrañables.",
+    "calificacion": 5,
+    "usuarioId": "68b9bb2d0f17e44d38342c53",
+    "likesUsuarios": [
+      "68b9bb2d0f17e44d38342c52",
+      "68b9bb2d0f17e44d38342c5a"
+    ],
+    "dislikesUsuarios": [],
+    "createdAt": "2025-09-04T16:15:41.598Z",
+    "updatedAt": "2025-09-04T16:15:41.598Z"
+  },
+  {
+    "_id": "68b9bb2d0f17e44d38342c92",
+    "contenidoId": "68b9bb2d0f17e44d38342c66",
+    "titulo": "Mágico inicio",
+    "comentario": "El comienzo perfecto de la saga, transmite la ilusión de descubrir un mundo nuevo.",
+    "calificacion": 5,
+    "usuarioId": "68b9bb2d0f17e44d38342c53",
+    "likesUsuarios": [
+      "68b9bb2d0f17e44d38342c56",
+      "68b9bb2d0f17e44d38342c58"
+    ],
+    "dislikesUsuarios": [
+      "68b9bb2d0f17e44d38342c55"
+    ],
+    "createdAt": "2025-09-04T16:15:41.598Z",
+    "updatedAt": "2025-09-04T16:15:41.598Z"
+  },
+  {
+    "_id": "68b9bb2d0f17e44d38342c9b",
+    "contenidoId": "68b9bb2d0f17e44d38342c72",
+    "titulo": "Revolucionaria",
+    "comentario": "Cambió la ciencia ficción para siempre, conceptos filosóficos y acción innovadora.",
+    "calificacion": 5,
+    "usuarioId": "68b9bb2d0f17e44d38342c53",
+    "likesUsuarios": [
+      "68b9bb2d0f17e44d38342c52",
+      "68b9bb2d0f17e44d38342c58"
+    ],
+    "dislikesUsuarios": [],
+    "createdAt": "2025-09-04T16:15:41.598Z",
+    "updatedAt": "2025-09-04T16:15:41.598Z"
+  },
+  {
+    "_id": "68b9bb2d0f17e44d38342ca4",
+    "contenidoId": "68b9bb2d0f17e44d38342c77",
+    "titulo": "Siempre divertida",
+    "comentario": "No importa cuántas veces la vea, siempre me saca una sonrisa.",
+    "calificacion": 5,
+    "usuarioId": "68b9bb2d0f17e44d38342c53",
+    "likesUsuarios": [
+      "68b9bb2d0f17e44d38342c56",
+      "68b9bb2d0f17e44d38342c58"
+    ],
+    "dislikesUsuarios": [],
+    "createdAt": "2025-09-04T16:15:41.598Z",
+    "updatedAt": "2025-09-04T16:15:41.598Z"
+  }
+]
